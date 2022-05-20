@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_clients"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Clients"/>
+        <item
+            android:id="@+id/nav_fournisseurs"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Fournisseurs"/>
+        <item
+            android:id="@+id/nav_produit"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Produits"/>
+        <item
+            android:id="@+id/nav_venteOp"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Les opération de vente"/>
+        <item
+            android:id="@+id/nav_achatOp"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:title="Les opération d'achat"/>
+    </group>
+
+</menu>

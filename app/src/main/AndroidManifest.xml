@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.pfeact">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PfeAct">
+        <activity
+            android:name=".EditFournisseurActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+        <activity
+            android:name=".AddFournisseurActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RapportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ParametresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditClientActivity"
+            android:exported="false"
+            android:noHistory="true" />
+        <activity
+            android:name=".AddClientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ComptoirActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FournisseurActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+        <activity
+            android:name=".ClientsActivity"
+            android:exported="false"
+            android:noHistory="true" />
+        <activity
+            android:name=".ProduitsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DrawerBaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>
