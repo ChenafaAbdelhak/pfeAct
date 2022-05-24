@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.pfeact">
 
     <application
@@ -9,7 +10,9 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PfeAct">
+        android:theme="@style/Theme.PfeAct"
+        >
+
         <activity
             android:name=".EditFournisseurActivity"
             android:exported="false"
@@ -48,6 +51,10 @@
             android:name=".DrawerBaseActivity"
             android:exported="false" />
         <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -60,7 +67,8 @@
 
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+            android:resource="@array/preloaded_fonts"
+            />
     </application>
 
 </manifest>

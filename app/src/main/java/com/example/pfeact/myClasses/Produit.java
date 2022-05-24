@@ -1,27 +1,29 @@
 package com.example.pfeact.myClasses;
 
 public class Produit {
-        private long id;
+        private int id;
         private String designation;
         private String codebarreProduit;
-        private long qte;
+        private int qte;
         private float prixAchat;
         private  float prixVente;
+        private  int clickCounter;
 
-
-        public Produit( String designation, String codebarreProduit, long qte, float prixAchat, float prixVente) {
+        public Produit(int id, String designation, String codebarreProduit, int qte, float prixAchat, float prixVente, int clickCount) {
+                this.id = id;
                 this.designation = designation;
                 this.codebarreProduit = codebarreProduit;
                 this.qte = qte;
                 this.prixAchat = prixAchat;
                 this.prixVente = prixVente;
+                this.clickCounter = clickCount;
         }
 
-        public long getId() {
+        public int getId() {
                 return id;
         }
 
-        public void setId(long id) {
+        public void setId(int id) {
                 this.id = id;
         }
 
@@ -41,27 +43,35 @@ public class Produit {
                 this.codebarreProduit = codebarreProduit;
         }
 
-        public String getQte() {
-                return String.valueOf(qte);
+        public int getQte() {
+                return qte;
         }
 
-        public void setQte(long qte) {
+        public void setQte(int qte) {
                 this.qte = qte;
         }
 
-        public String getPrixAchat() {
-                return String.valueOf(prixAchat);
+        public float getPrixAchat() {
+                return prixAchat;
         }
 
         public void setPrixAchat(float prixAchat) {
                 this.prixAchat = prixAchat;
         }
 
-        public String getPrixVente() {
-                return String.valueOf(prixVente);
+        public float getPrixVente() {
+                return prixVente;
         }
 
         public void setPrixVente(float prixVente) {
                 this.prixVente = prixVente;
+        }
+
+        public int getClickCounter() {
+                return clickCounter;
+        }
+
+        public void setClickCounter(int clickCounter) {
+                this.clickCounter = clickCounter;
         }
 }

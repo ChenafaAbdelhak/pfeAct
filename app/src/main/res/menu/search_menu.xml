@@ -9,9 +9,19 @@
     <!--item for our search view with its id-->
     <item
         android:id="@+id/actionSearch"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search"
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+    <item
+        android:id="@+id/shoopingCart"
+        android:icon="@drawable/ic_cart"
+        android:title="Cart"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/barcode"
+        android:icon="@drawable/ic_barcode"
+        android:title="code a barre"
+        app:showAsAction="always"/>
 
 </menu>

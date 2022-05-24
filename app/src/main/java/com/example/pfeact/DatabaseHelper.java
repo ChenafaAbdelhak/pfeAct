@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_LIGNEVENTE_TABLE =
             "CREATE TABLE LigneVente (idProduit INTEGER REFERENCES Produit (idProduit)," +
                     " idFactureVente INTEGER REFERENCES FactureVente (idFactureVente), " +
-                    " qteVendu INTEGER, prixVente FLOAT, beneficeLigne FLOAT," +
+                    " qteVendu INTEGER, prixAchat FLOAT, prixVente FLOAT, beneficeLigne FLOAT," +
                     " CONSTRAINT pm_LigneVente" +
                     " PRIMARY KEY (idProduit,idFactureVente))";
 
@@ -117,8 +117,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Produit> produitArrayList = new ArrayList<>();
         if(cursor.moveToFirst()){
             do {
-                produitArrayList.add(new Produit(cursor.getString(1),cursor.getString(2),
-                        cursor.getLong(3),cursor.getFloat(4),cursor.getFloat(5)));
+                produitArrayList.add(new Produit(cursor.getInt(0),cursor.getString(1),cursor.getString(2),
+                        cursor.getInt(3),cursor.getFloat(4),cursor.getFloat(5),0));
             }while (cursor.moveToNext());
         }
 

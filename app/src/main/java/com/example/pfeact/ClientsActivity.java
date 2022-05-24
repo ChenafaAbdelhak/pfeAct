@@ -121,10 +121,6 @@ public class ClientsActivity extends AppCompatActivity implements ClientAdapter.
         clientArrayList = new ArrayList<>();
         myDBHelper = new DatabaseHelper(ClientsActivity.this);
         clientArrayList = myDBHelper.afficherClient();
-
-        // below line is to add data to our array list.
-
-
         // initializing our adapter class.
         clientAdapter = new ClientAdapter(clientArrayList, ClientsActivity.this,this);
 

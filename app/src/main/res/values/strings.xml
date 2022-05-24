@@ -16,4 +16,7 @@
     <string name="restaurer_une_base_de_donne">Restaurer une base de donnée</string>
     <string name="permission_stockage_obligatiore">Permission de stockage obligatiore</string>
     <string name="backup_folder">PosBackup</string>
+    <string name="devise_dapplication">DZD</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
