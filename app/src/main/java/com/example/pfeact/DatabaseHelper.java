@@ -13,7 +13,10 @@ import com.example.pfeact.myClasses.Famille;
 import com.example.pfeact.myClasses.Fournisseur;
 import com.example.pfeact.myClasses.Produit;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DBname = "data.db";
@@ -79,7 +82,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LIGNEACHAT_TABLE);
         db.execSQL(CREATE_LIGNEVENTE_TABLE);
 
-        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('www','1234',2,10,100);");
+        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('www','1234',5,10,100);");
+        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('aaa','1235',5,10,100);");
         db.execSQL("insert into Fournisseur( nomFournisseur,adresseFournisseur,detteFournisseur,phoneFournisseur) values('DEFAULT','_',0,'_');");
         db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('ANONYME','_',0,0,'_');");
         db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('hjhj','_',11,11,'_');");
@@ -123,7 +127,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        db.close();
         return produitArrayList;
+    }
+
+    public void modifierProduit(int id, String designation, String cbarre, int QuantiteProduit, float PrixAchat, float PrixVente) {
+        ContentValues values = new ContentValues();
+        values.put("idProduit", id);
+        values.put("designation", designation);
+        values.put("cbProduit",cbarre);
+        values.put("qte", QuantiteProduit);
+        values.put("prixAchat", PrixAchat);
+        values.put("prixVente", PrixVente);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update("Produit", values, "idProduit = ? ", new String[]{String.valueOf(id)});
+
+        db.close();
     }
 
 
@@ -288,6 +307,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("Fournisseur", "idFournisseur = ? ", new String[]{String.valueOf(id)});
         db.close();
+    }
+
+    public int effectuerVente(int idClient, float montantTotal, float remise, float beneficeFacture, ArrayList<Produit> produitCartArrayList){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues cv = new ContentValues();
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        cv.put("idClient",idClient);
+        cv.put("dateVente",currentDate);
+        cv.put("heureVente",currentTime);
+        cv.put("montantTotal",montantTotal);
+        cv.put("remise",remise);
+        cv.put("beneficeFacture",beneficeFacture);
+
+        long idFactureVente = db.insert("FactureVente",null,cv);
+
+        for (int i=0 ;i<produitCartArrayList.size();i++){
+            cv.clear();
+            //ajouter les lignes de vente
+            Produit produit= produitCartArrayList.get(i);
+            cv.put("idProduit",produit.getId());
+            cv.put("idFactureVente",idFactureVente);
+            cv.put("qteVendu",produit.getClickCounter());
+            cv.put("prixAchat",produit.getPrixAchat());
+            cv.put("prixVente",produit.getPrixVente());
+            cv.put("beneficeLigne",produit.getPrixVente()-produit.getPrixAchat());
+
+            db.insert("LigneVente",null,cv);
+
+            cv.clear();
+
+            //modifier la quantité
+            cv.put("idProduit", produit.getId());
+            cv.put("qte", produit.getQte()-produit.getClickCounter());
+
+
+            db.update("Produit", cv, "idProduit = ? ", new String[]{String.valueOf(produit.getId())});
+
+        }
+
+
+
+        db.close();
+        return 1;
     }
 
     public ArrayList<Famille> afficherFamilles(){

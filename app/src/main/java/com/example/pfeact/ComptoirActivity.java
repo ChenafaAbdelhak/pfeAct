@@ -33,10 +33,12 @@ import java.util.ArrayList;
 public class ComptoirActivity extends AppCompatActivity implements ProduitAdapter.OnProduitCClickListener {
 
     private RecyclerView comptoirRV;
-    public static ArrayList<Produit> produitArrayList,selectedItems;
+    public static ArrayList<Produit> produitArrayList;
     private TextView tvAucuneResultatComptoir;
-    private  ProduitAdapter produitAdapter;
+    protected   ProduitAdapter produitAdapter;
     private String barcodeResult;
+    private boolean isAnyItemSelected;
+    private DatabaseHelper databaseHelper;
 
     //ActivityComptoirBinding activityComptoirBinding;
 
@@ -49,44 +51,20 @@ public class ComptoirActivity extends AppCompatActivity implements ProduitAdapte
         comptoirRV = findViewById(R.id.idRVcomptoir);
         tvAucuneResultatComptoir = findViewById(R.id.idTVaucuneResultatc);
         tvAucuneResultatComptoir.setVisibility(View.INVISIBLE);
+        isAnyItemSelected = false;
 
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        databaseHelper = new DatabaseHelper(this);
         produitArrayList = new ArrayList<>();
-        produitArrayList.add(new Produit(1,"kitmain oppo 3.5 jack","1",5,510,650,0));
-        produitArrayList.add(new Produit(2,"kitmain condor 3.5 jack","1",0,510,650,0));
-        produitArrayList.add(new Produit(3,"kitmain samsung 3.5 jack","1",5,510,650,0));
-        produitArrayList.add(new Produit(4,"kitmain mi 3.5 kq jk  jack","1",5,510,650,0));
-        produitArrayList.add(new Produit(5,"kitmain apple 3.5 jack","1",5,510,650,0));
-        produitArrayList.add(new Produit(6,"kitmain huawei 3.5 jack","1",4,510,650,0));
-        produitArrayList.add(new Produit(6,"P2","1",4,510,650,0));
-        produitArrayList.add(new Produit(6,"P3","1",4,510,650,0));
-        produitArrayList.add(new Produit(6,"P4","1",4,510,650,0));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-        produitArrayList.add(new Produit(6,"P5","6132000100634",3,510,650,1));
-
-
+        produitArrayList = databaseHelper.afficherProduits();
 
 
         produitAdapter = new ProduitAdapter(produitArrayList,this,this);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         comptoirRV.setLayoutManager(layoutManager);
         comptoirRV.setAdapter(produitAdapter);
+
 
     }
     @Override
@@ -184,8 +162,18 @@ public class ComptoirActivity extends AppCompatActivity implements ProduitAdapte
                 overridePendingTransition(0,0);
                 break;
             case R.id.shoopingCart:
-                 CartDialog bottomSheet = new CartDialog();
-                bottomSheet.show(getSupportFragmentManager(),"ModalBottomSheet");
+                isAnyItemSelected = false;
+                for(int i=0;i<produitArrayList.size();i++){
+                    if (produitArrayList.get(i).getClickCounter() != 0)
+                        isAnyItemSelected = true;
+                }
+                if (isAnyItemSelected == true) {
+                    CartDialog bottomSheet = new CartDialog();
+                    bottomSheet.show(getSupportFragmentManager(), "ModalBottomSheet");
+
+                }else {
+                    Toast.makeText(this,"Panier vide !",Toast.LENGTH_SHORT).show();
+                }
                 break;
             case  R.id.barcode:
                 IntentIntegrator intentIntegrator = new IntentIntegrator(this);
@@ -224,14 +212,13 @@ public class ComptoirActivity extends AppCompatActivity implements ProduitAdapte
     public void onProduitCClickListener(int position) {
 
     }
-    public ArrayList<Produit> getSelectedItems(){
-        for (int i=0;i<produitArrayList.size();i++){
-            if(produitArrayList.get(i).getClickCounter() > 0)
-                selectedItems.add(produitArrayList.get(i));
-        }
-        if (selectedItems.size() == 0) {
-            Toast.makeText(this, "panier vide !!", Toast.LENGTH_SHORT).show();
-            return null;
-        }else {return selectedItems;}
+
+    public void dataChanged(){
+        produitAdapter.notifyDataSetChanged();
+    }
+
+    public  void afterCheckout(){
+        produitArrayList = databaseHelper.afficherProduits();
+        produitAdapter.changeArraylist(produitArrayList);
     }
 }

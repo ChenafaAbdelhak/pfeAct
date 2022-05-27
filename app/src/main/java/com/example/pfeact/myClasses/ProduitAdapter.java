@@ -124,4 +124,9 @@ public class ProduitAdapter extends RecyclerView.Adapter<ProduitAdapter.ProduitV
     public interface OnProduitCClickListener{
         void onProduitCClickListener(int position);
     }
+
+    public void changeArraylist(ArrayList<Produit> newArray){
+        produitArrayList = newArray;
+        notifyDataSetChanged();
+    }
 }

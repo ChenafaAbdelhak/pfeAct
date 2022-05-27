@@ -13,11 +13,15 @@
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/activity_edit_fournisseur.xml" value="0.11775362318840579" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/activity_fournisseurs.xml" value="0.11775362318840579" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/activity_rapports.xml" value="0.1" />
+        <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/cart_commande_dialog_layout.xml" value="0.1490036231884058" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/cart_dialog_layout.xml" value="0.22" />
+        <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/cart_item_dialog_layout.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/cart_layout.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/client_rv_item.xml" value="0.11775362318840579" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/fournisseur_rv_item.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/produitcart_rv_item.xml" value="0.4740740740740741" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/produitcomptoir_rv_item.xml" value="0.18142548596112312" />
+        <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/layout/spinner_dropdown_item.xml" value="0.1490036231884058" />
         <entry key="..\:/Users/lenovo-T470S/AndroidStudioProjects/pfeAct/app/src/main/res/menu/search_menu.xml" value="0.6" />
       </map>
     </option>
