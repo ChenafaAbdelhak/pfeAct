@@ -48,13 +48,18 @@ public class ComptoirActivity extends AppCompatActivity implements ProduitAdapte
         setContentView(R.layout.activity_comptoir);
 
         ActionBar actionBar = getSupportActionBar();
+        // showing the back button in action bar
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Comptoir");
+        }
+
+
         comptoirRV = findViewById(R.id.idRVcomptoir);
         tvAucuneResultatComptoir = findViewById(R.id.idTVaucuneResultatc);
         tvAucuneResultatComptoir.setVisibility(View.INVISIBLE);
         isAnyItemSelected = false;
 
-        // showing the back button in action bar
-        actionBar.setDisplayHomeAsUpEnabled(true);
         databaseHelper = new DatabaseHelper(this);
         produitArrayList = new ArrayList<>();
         produitArrayList = databaseHelper.afficherProduits();
@@ -73,7 +78,7 @@ public class ComptoirActivity extends AppCompatActivity implements ProduitAdapte
         MenuInflater inflater = getMenuInflater();
 
         // inside inflater we are inflating our menu file.
-        inflater.inflate(R.menu.search_menu, menu);
+        inflater.inflate(R.menu.comptoir_menu, menu);
 
         // below line is to get our menu item.
         MenuItem searchItem = menu.findItem(R.id.actionSearch);

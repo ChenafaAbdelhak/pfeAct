@@ -207,7 +207,7 @@ public class FournisseurActivity extends AppCompatActivity implements Fournisseu
     public void onEditButtonClick(int position) {
         bundle = new Bundle();
 
-        Intent intent = new Intent(getApplicationContext(),EditClientActivity.class);
+        Intent intent = new Intent(getApplicationContext(),EditFournisseurActivity.class);
         bundle.putInt("id",fournisseurArrayList.get(position).getId());
         bundle.putString("nom",fournisseurArrayList.get(position).getNomF());
         bundle.putString("adresse",fournisseurArrayList.get(position).getAdresseF());

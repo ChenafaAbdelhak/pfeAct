@@ -63,7 +63,7 @@ public class AddClientActivity extends AppCompatActivity {
                 String b = String.valueOf(adresseClientTV.getText());
                 String c = String.valueOf(phoneClientTV.getText());
 
-                checkAndAdd(a);
+                checkAndAdd(a,b,c);
 
 
 
@@ -80,7 +80,7 @@ public class AddClientActivity extends AppCompatActivity {
         return;
     }
 
-    private  void checkAndAdd(String a){
+    private  void checkAndAdd(String a, String b, String c){
         databaseHelper = new DatabaseHelper(getApplicationContext());
         boolean n = databaseHelper.isClientUnique(a);
 
@@ -100,7 +100,8 @@ public class AddClientActivity extends AppCompatActivity {
                 toast.show();
                 }
             else {
-                toast.setText("Client ajouté avec succès");
+
+                toast.setText(a+b+c);
                 toast.show();
                 viderTV();
 

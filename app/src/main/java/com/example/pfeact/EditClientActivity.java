@@ -81,11 +81,11 @@ public class EditClientActivity extends AppCompatActivity {
                 break;
             case R.id.action_settings:
                 //Toast.makeText(this,"item clicked",Toast.LENGTH_SHORT).show();
-                String a = String.valueOf(nomClientTV.getText());
-                String b = String.valueOf(adresseClientTV.getText());
-                String c = String.valueOf(phoneClientTV.getText());
+                String a = String.valueOf(nomClientTV.getText().toString());
+                String b = String.valueOf(adresseClientTV.getText().toString());
+                String c = String.valueOf(phoneClientTV.getText().toString());
 
-                checkAndEdit(a);
+                checkAndEdit(a,b,c);
 
 
 
@@ -102,7 +102,7 @@ public class EditClientActivity extends AppCompatActivity {
         return;
     }
 
-    private  void checkAndEdit(String a){
+    private  void checkAndEdit(String a, String b, String c){
         databaseHelper = new DatabaseHelper(getApplicationContext());
         boolean n = databaseHelper.isClientUnique(a);
         if (idClient == 1){
@@ -117,7 +117,7 @@ public class EditClientActivity extends AppCompatActivity {
             toastMessage.show();
         }
 
-        else if(n==false)
+        else if(n==false && !(a.equals(bundle.get("nom"))))
         {
             nomClientTV.setError("ce nom existe déjà, essayez un autre !");
 

@@ -172,6 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues cv = new ContentValues();
 
+
         cv.put("nomClient",nomClient);
         cv.put("adresseClient",adressClient);
         cv.put("PhoneClient",PhoneClient);

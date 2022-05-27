@@ -61,7 +61,7 @@ public class AddFournisseurActivity extends AppCompatActivity {
                 String b = String.valueOf(adresseFournisseurTV.getText());
                 String c = String.valueOf(phoneFournisseurTV.getText());
 
-                checkAndAdd(a);
+                checkAndAdd(a,b,c);
 
 
                 return true;
@@ -77,7 +77,7 @@ public class AddFournisseurActivity extends AppCompatActivity {
         return;
     }
 
-    private void checkAndAdd(String a) {
+    private void checkAndAdd(String a, String b, String c) {
         databaseHelper = new DatabaseHelper(getApplicationContext());
         boolean n = databaseHelper.isFournisseurUnique(a);
 

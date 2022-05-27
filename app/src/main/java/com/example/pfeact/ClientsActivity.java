@@ -32,7 +32,7 @@ public class ClientsActivity extends AppCompatActivity implements ClientAdapter.
     private DatabaseHelper myDBHelper;
     private SQLiteDatabase myDatabase;
     FloatingActionButton fabAddClient ;
-    ActivityClientsBinding activityClientsBinding;
+    //ActivityClientsBinding activityClientsBinding;
     private RecyclerView clientsRV;
     private ArrayList<Client> clientArrayList ;
     private ClientAdapter clientAdapter;

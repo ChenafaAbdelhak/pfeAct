@@ -75,7 +75,7 @@ public class EditFournisseurActivity extends AppCompatActivity {
                 String b = String.valueOf(adresseFournisseurTV.getText());
                 String c = String.valueOf(phoneFournisseurTV.getText());
 
-                checkAndEdit(a);
+                checkAndEdit(a,b,c);
 
 
 
@@ -92,7 +92,7 @@ public class EditFournisseurActivity extends AppCompatActivity {
         return;
     }
 
-    private  void checkAndEdit(String a){
+    private  void checkAndEdit(String a, String b, String c){
         databaseHelper = new DatabaseHelper(getApplicationContext());
         boolean n = databaseHelper.isFournisseurUnique(a);
         if (idFournisseur == 1){
@@ -107,7 +107,7 @@ public class EditFournisseurActivity extends AppCompatActivity {
             toastMessage.show();
         }
 
-        else if(n==false)
+        else if(n==false && !(a.equals(bundle.get("nom"))))
         {
             nomFournisseurTV.setError("ce nom existe déjà, essayez un autre !");
 
