@@ -54,4 +54,9 @@ public class Fournisseur {
     public void setDette(double dette) {
         this.dette = dette;
     }
+
+    @Override
+    public String toString() {
+        return nomF;
+    }
 }

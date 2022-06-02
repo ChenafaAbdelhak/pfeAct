@@ -6,9 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import com.example.pfeact.myClasses.Client;
+import com.example.pfeact.myClasses.FactureVente;
 import com.example.pfeact.myClasses.Famille;
 import com.example.pfeact.myClasses.Fournisseur;
 import com.example.pfeact.myClasses.Produit;
@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_FACTUREACHAT_TABLE =
             "CREATE TABLE FactureAchat (idFactureAchat INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    " idFournisseur INTEGER REFERENCES Fournisseur (idFourniseur), dateAchat TEXT" +
+                    " idFournisseur INTEGER REFERENCES Fournisseur (idFourniseur), dateAchat TEXT," +
                     "heureAchat TEXT, montantTotal FLOAT)";
 
     private static final String CREATE_LIGNEACHAT_TABLE =
@@ -49,7 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static  final String CREATE_PRODUIT_TABLE =
             "CREATE TABLE Produit (idProduit INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "designation TEXT UNIQUE NOT NULL, cbProduit TEXT, qte INTEGER, prixAchat FLOAT, prixVente FLOAT)";
+                    "designation TEXT UNIQUE NOT NULL, cbProduit TEXT UNIQUE , qte INTEGER, prixAchat FLOAT, prixVente FLOAT" +
+                    ", idFamille INTEGER REFERENCES Famille (idFamille))";
 
     private static final String CREATE_FACTUREVENTE_TABLE =
             "CREATE TABLE FactureVente (idFactureVente INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -82,31 +83,157 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LIGNEACHAT_TABLE);
         db.execSQL(CREATE_LIGNEVENTE_TABLE);
 
-        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('www','1234',5,10,100);");
-        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('aaa','1235',5,10,100);");
-        db.execSQL("insert into Fournisseur( nomFournisseur,adresseFournisseur,detteFournisseur,phoneFournisseur) values('DEFAULT','_',0,'_');");
+        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('wwwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','1234',5,100000,1000000);");
+        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente,idFamille) values('aaa','1235',5,10,100,1);");
+        db.execSQL("insert into Famille( nomFamille) values('autre');");
+        db.execSQL("insert into Fournisseur( nomFournisseur) values('default');");
         db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('ANONYME','_',0,0,'_');");
-        db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('hjhj','_',11,11,'_');");
-        db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('dddd','_',11,11,'_');");
+
     }
 
 
 
-    public void ajouterProduit(String designation,String codebarreProduit,long qte,float prixAchat,float prixVente){
+
+
+
+
+
+
+
+
+
+
+    public ArrayList<Famille> afficherFamille(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM Famille",null);
+
+        ArrayList<Famille> familleArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                familleArrayList.add(new Famille(cursor.getInt(0),cursor.getString(1)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return familleArrayList;
+
+    }
+
+
+    public  boolean isFamilleUnique (String nom){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Famille WHERE nomFamille ='"+nom+"'",null);
+
+        cursor.moveToFirst();
+        int n = cursor.getInt(0);
+
+        if(n!=0){return  false;}
+        else{return  true;}
+    }
+
+    public long ajouterFamille(String nomFamille){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+
+        cv.put("nomFamille",nomFamille);
+
+
+        long res = db.insert("Famille",null,cv);
+
+        db.close();
+
+        return res;
+
+    }
+
+    public int modifierFamille(int idFamille, String nomFamille) {
+        ContentValues values = new ContentValues();
+        values.put("idFamille", idFamille);
+        values.put("nomFamille", nomFamille);
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        int result = db.update("Famille", values, "idFamille = ? ", new String[]{String.valueOf(idFamille)});
+
+        db.close();
+        return result;
+    }
+
+    public  boolean isFamilleDeleteSafe(int idFamille){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Produit WHERE idFamille ='"+idFamille+"'",null);
+        cursor.moveToFirst();
+        int n = cursor.getInt(0);
+
+
+        db.close();
+        cursor.close();
+
+
+        if(n ==  0){return  true;}
+        else{return  false;}
+    }
+
+    public void supprimerFamille(int idFamille) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("Famille", "idFamille = ? ", new String[]{String.valueOf(idFamille)});
+        db.close();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public long ajouterProduit(String designation, String codebarreProduit, int qte, float prixAchat, float prixVente, int isFamille){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
 
         cv.put("designation",designation);
-        cv.put("cbProduit",codebarreProduit);
+        if (codebarreProduit.matches("")){
+            cv.putNull("cbProduit");
+        }else{
+            cv.put("cbProduit",codebarreProduit);
+        }
         cv.put("qte",qte);
         cv.put("prixAchat",prixAchat);
         cv.put("prixVente",prixVente);
+        cv.put("idFamille",isFamille);
 
-        db.insert("Produit",null,cv);
+        long res = db.insert("Produit",null,cv);
 
         db.close();
+
+        return res;
 
     }
 
@@ -122,7 +249,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do {
                 produitArrayList.add(new Produit(cursor.getInt(0),cursor.getString(1),cursor.getString(2),
-                        cursor.getInt(3),cursor.getFloat(4),cursor.getFloat(5),0));
+                        cursor.getInt(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getInt(6),0));
             }while (cursor.moveToNext());
         }
 
@@ -131,19 +258,95 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return produitArrayList;
     }
 
-    public void modifierProduit(int id, String designation, String cbarre, int QuantiteProduit, float PrixAchat, float PrixVente) {
+    public  boolean isProduitUnique (String nom){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Produit WHERE designation ='"+nom+"'",null);
+
+        cursor.moveToFirst();
+        int n = cursor.getInt(0);
+
+        if(n!=0){return  false;}
+        else{return  true;}
+    }
+
+    public  boolean isBarcodeUnique (String barcode){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM Produit WHERE cbProduit ='"+barcode+"'",null);
+
+        cursor.moveToFirst();
+        int n = cursor.getInt(0);
+
+        if(n!=0){return  false;}
+        else{return  true;}
+    }
+
+    public  boolean isProduitDeleteSafe(int idProduit){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM LigneVente WHERE idProduit ='"+idProduit+"'",null);
+        cursor.moveToFirst();
+        int nAchat = cursor.getInt(0);
+
+        Cursor cursor1 = db.rawQuery("SELECT COUNT(*) FROM LigneAchat WHERE idProduit ='"+idProduit+"'",null);
+        cursor1.moveToFirst();
+        int nVente = cursor1.getInt(0);
+
+        db.close();
+        cursor.close();
+        cursor1.close();
+
+        if(nAchat!=0 || nVente!=0){return  false;}
+        else{return  true;}
+    }
+
+    public int modifierProduit(int id, String designation, String cbarre, int QuantiteProduit, float PrixAchat, float PrixVente, int idFamille) {
         ContentValues values = new ContentValues();
         values.put("idProduit", id);
         values.put("designation", designation);
-        values.put("cbProduit",cbarre);
+        if (cbarre.matches("")){
+            values.putNull("cbProduit");
+        }else{
+            values.put("cbProduit",cbarre);
+        }
         values.put("qte", QuantiteProduit);
         values.put("prixAchat", PrixAchat);
         values.put("prixVente", PrixVente);
+        values.put("idFamille",idFamille);
         SQLiteDatabase db = this.getWritableDatabase();
-        db.update("Produit", values, "idProduit = ? ", new String[]{String.valueOf(id)});
+        int result = db.update("Produit", values, "idProduit = ? ", new String[]{String.valueOf(id)});
 
         db.close();
+        return result;
     }
+
+
+    public void supprimerProduit(int idProduit) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("Produit", "idProduit = ? ", new String[]{String.valueOf(idProduit)});
+        db.close();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -230,6 +433,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public ArrayList<Fournisseur> afficherFournisseurs(){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -247,6 +470,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return fournisseurArrayList;
     }
+    public ArrayList<FactureVente> getFactureVenteFromTo(String dateDebut , String dateFin){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM FactureVente where dateVente between "+dateDebut+" and "+dateFin,null);
+
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getString(1),
+                        cursor.getString(2), cursor.getFloat(3)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return factureVenteArrayList;
+    }
+
+
 
     public long ajouterFournisseur(String nomFournisseur,String adressFournisseur,String phoneFournisseur){
 
@@ -358,22 +599,80 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 1;
     }
 
-    public ArrayList<Famille> afficherFamilles(){
+    public int achatParAjoutProduit(int idFournisseur, float montantTotal, Produit produit){
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM Famille",null);
 
-        ArrayList<Famille> familleArrayList = new ArrayList<>();
-        if(cursor.moveToFirst()){
-            do {
-                familleArrayList.add(new Famille(cursor.getInt(0),cursor.getString(1)));
-            }while (cursor.moveToNext());
-        }
+        ContentValues cv = new ContentValues();
+        String currentDate = new SimpleDateFormat("YYYY-MM-dd", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        cursor.close();
-        return familleArrayList;
+        cv.put("idFournisseur",idFournisseur);
+        cv.put("dateAchat",currentDate);
+        cv.put("heureAchat",currentTime);
+        cv.put("montantTotal",montantTotal);
+
+
+        long idFactureAchat = db.insert("FactureAchat",null,cv);
+
+            cv.clear();
+
+            //ajouter une ligne achat
+
+            cv.put("idProduit",produit.getId());
+            cv.put("idFactureAchat",idFactureAchat);
+            cv.put("qteAchat",produit.getQte());
+            cv.put("prixAchat",produit.getPrixAchat());
+            cv.put("prixVente",produit.getPrixVente());
+
+            db.insert("LigneAchat",null,cv);
+
+            cv.clear();
+
+
+
+        db.close();
+        return 1;
     }
+
+    public int achatParModificationProduit(int idFournisseur,Produit produit, int qteAjoutee){
+
+        float montantTotal = produit.getQte() * produit.getPrixAchat();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues cv = new ContentValues();
+        String currentDate = new SimpleDateFormat("YYYY-MM-dd", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        cv.put("idFournisseur",idFournisseur);
+        cv.put("dateAchat",currentDate);
+        cv.put("heureAchat",currentTime);
+        cv.put("montantTotal",montantTotal);
+
+
+        long idFactureAchat = db.insert("FactureAchat",null,cv);
+
+        cv.clear();
+
+        //ajouter une ligne achat
+
+        cv.put("idProduit",produit.getId());
+        cv.put("idFactureAchat",idFactureAchat);
+        cv.put("qteAchat",qteAjoutee);
+        cv.put("prixAchat",produit.getPrixAchat());
+        cv.put("prixVente",produit.getPrixVente());
+
+        db.insert("LigneAchat",null,cv);
+
+        cv.clear();
+
+        return 1;
+
+    }
+
 
 
 

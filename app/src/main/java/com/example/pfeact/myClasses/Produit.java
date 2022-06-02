@@ -7,16 +7,18 @@ public class Produit {
         private int qte;
         private float prixAchat;
         private  float prixVente;
+        private int idFamille;
         private  int clickCounter;
 
-        public Produit(int id, String designation, String codebarreProduit, int qte, float prixAchat, float prixVente, int clickCount) {
+        public Produit(int id, String designation, String codebarreProduit, int qte, float prixAchat, float prixVente, int idFamille, int clickCounter) {
                 this.id = id;
                 this.designation = designation;
                 this.codebarreProduit = codebarreProduit;
                 this.qte = qte;
                 this.prixAchat = prixAchat;
                 this.prixVente = prixVente;
-                this.clickCounter = clickCount;
+                this.idFamille = idFamille;
+                this.clickCounter = clickCounter;
         }
 
         public int getId() {
@@ -65,6 +67,14 @@ public class Produit {
 
         public void setPrixVente(float prixVente) {
                 this.prixVente = prixVente;
+        }
+
+        public int getIdFamille() {
+                return idFamille;
+        }
+
+        public void setIdFamille(int idFamille) {
+                this.idFamille = idFamille;
         }
 
         public int getClickCounter() {

@@ -10,13 +10,26 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PfeAct"
-        >
-
+        android:theme="@style/Theme.PfeAct">
+        <activity
+            android:name=".EditFamilleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFamilleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FamilleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EditProduitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddProduit"
+            android:exported="false" />
         <activity
             android:name=".EditFournisseurActivity"
             android:exported="false"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".AddFournisseurActivity"
             android:exported="false" />
@@ -39,7 +52,7 @@
         <activity
             android:name=".FournisseurActivity"
             android:exported="false"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".ClientsActivity"
             android:exported="false"
@@ -67,8 +80,7 @@
 
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts"
-            />
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

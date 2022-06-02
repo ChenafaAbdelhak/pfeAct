@@ -28,6 +28,7 @@ public class ParametresActivity extends AppCompatActivity {
     private String[] storagePermissions;
     CardView cardExport;
     CardView cardImport;
+    CardView cardFamille;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,13 @@ public class ParametresActivity extends AppCompatActivity {
 
         cardExport = findViewById(R.id.idCardExport);
         cardImport = findViewById(R.id.idCardImport);
+        cardFamille = findViewById(R.id.idCardFamille);
+        cardFamille.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),FamilleActivity.class));
+            }
+        });
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         ActionBar actionBar = getSupportActionBar();

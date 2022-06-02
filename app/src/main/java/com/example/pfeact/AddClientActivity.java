@@ -101,7 +101,7 @@ public class AddClientActivity extends AppCompatActivity {
                 }
             else {
 
-                toast.setText(a+b+c);
+                toast.setText("client ajouté avec succès");
                 toast.show();
                 viderTV();
 

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 public class ClientsActivity extends AppCompatActivity implements ClientAdapter.OnClientListener {
 
     private DatabaseHelper myDBHelper;
-    private SQLiteDatabase myDatabase;
     FloatingActionButton fabAddClient ;
     //ActivityClientsBinding activityClientsBinding;
     private RecyclerView clientsRV;
@@ -175,7 +174,7 @@ public class ClientsActivity extends AppCompatActivity implements ClientAdapter.
             Snackbar s = Snackbar.make(clientsRV,"Vous pouvez pas supprimer ce client, il a déja effectuer des achats..",Snackbar.LENGTH_LONG);
             s.show();
         }else {
-           builder.setTitle("Vous voullez supprimer ce client ?").setCancelable(true)
+           builder.setTitle("Vous voullez supprimer ce produit ?").setCancelable(true)
                    .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialogInterface, int i) {

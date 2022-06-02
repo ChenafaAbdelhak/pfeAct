@@ -1,20 +1,16 @@
-package com.example.pfeact;
+package com.example.pfeact.myClasses;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pfeact.myClasses.Produit;
-import com.example.pfeact.myClasses.ProduitAdapter;
+import com.example.pfeact.R;
 
 import java.util.ArrayList;
 

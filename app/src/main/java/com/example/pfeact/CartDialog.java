@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 //import com.example.pfeact.databinding.CartDialogLayoutBinding;
 import com.example.pfeact.myClasses.Client;
 import com.example.pfeact.myClasses.Produit;
+import com.example.pfeact.myClasses.ProduitCartAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -72,9 +73,12 @@ public class CartDialog extends BottomSheetDialogFragment implements ProduitCart
             buildRecyclerView();
 
         Spinner spinner = (Spinner) view.findViewById(R.id.idSpClientFactureVente);
-        ArrayList<Client> clientArrayList = new ArrayList<>();
+        ArrayList<Client> clientArrayList;
         clientArrayList = databaseHelper.afficherClient();
-        clientArrayAdapter = new ArrayAdapter<Client>(getContext(), android.R.layout.simple_spinner_item,clientArrayList);
+        clientArrayAdapter = new ArrayAdapter<Client>(getContext(),
+                android.R.layout.simple_spinner_item,
+                clientArrayList);
+
         clientArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(clientArrayAdapter);
         remiseET.addTextChangedListener(new TextWatcher() {
@@ -122,6 +126,7 @@ public class CartDialog extends BottomSheetDialogFragment implements ProduitCart
                     ,produitCartArrayList);
 
                     if (res == 1) {
+                        Toast.makeText(getContext(),"vente effectuée avec succès",Toast.LENGTH_SHORT).show();
                         for (int i=0;i<ComptoirActivity.produitArrayList.size();i++){
                             ComptoirActivity.produitArrayList.get(i).setClickCounter(0);
                         }
@@ -159,24 +164,6 @@ public class CartDialog extends BottomSheetDialogFragment implements ProduitCart
         // our recycler view.
         recyclerView.setAdapter(produitCartAdapter);
         calculerTotal();
-    }
-
-    private void  calculerTotal(){
-            montantTotal = 0;
-            remise = 0;
-            if (remiseET.getText().toString().equals("") == false)
-                remise = Float.parseFloat(remiseET.getText().toString());
-        for (Produit produit : produitCartArrayList){
-            montantTotal = montantTotal+produit.getPrixVente();
-        }
-        montantTotalTV.setText("Total :  "+montantTotal+" DZD");
-        montantTotalApresRemise = montantTotal - remise;
-        if (remise > montantTotal){
-            montantTotalApresRemiseTV.setText("erreur ");
-        }else {
-            montantTotalApresRemiseTV.setText("Total aprés remise : "+montantTotalApresRemise+" DZD");
-
-        }
     }
 
     @Override
@@ -305,5 +292,25 @@ public class CartDialog extends BottomSheetDialogFragment implements ProduitCart
         ((ComptoirActivity) getActivity()).dataChanged();
         dismiss();
     }
+
+    private void  calculerTotal(){
+        montantTotal = 0;
+        remise = 0;
+        if (!remiseET.getText().toString().equals(""))
+            remise = Float.parseFloat(remiseET.getText().toString());
+        for (Produit produit : produitCartArrayList){
+            montantTotal = montantTotal+(produit.getClickCounter() * produit.getPrixVente());
+        }
+        montantTotalTV.setText("Total :  "+montantTotal+" DZD");
+        montantTotalApresRemise = montantTotal - remise;
+        if (remise > montantTotal){
+            montantTotalApresRemiseTV.setText("erreur ");
+        }else {
+            montantTotalApresRemiseTV.setText("Total aprés remise : "+montantTotalApresRemise+" DZD");
+
+        }
+    }
+
+
 }
 
