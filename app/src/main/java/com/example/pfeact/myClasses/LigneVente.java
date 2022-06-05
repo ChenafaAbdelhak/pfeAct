@@ -1,26 +1,36 @@
 package com.example.pfeact.myClasses;
 
 public class LigneVente {
-    private long id;
+    private int idProduit;
+    private long idFactureVente;
     private int QteVendu;
-    private double prixAchat;
-    private double prixVente;
-    private double beneficeLigne;
+    private float prixAchat;
+    private float prixVente;
+    private float beneficeLigne;
 
-    public LigneVente(long id, int qteVendu, double prixAchat, double prixVente, double beneficeLigne) {
-        this.id = id;
+    public LigneVente(int idProduit, long idFactureVente, int qteVendu, float prixAchat, float prixVente, float beneficeLigne) {
+        this.idProduit = idProduit;
+        this.idFactureVente = idFactureVente;
         QteVendu = qteVendu;
         this.prixAchat = prixAchat;
         this.prixVente = prixVente;
         this.beneficeLigne = beneficeLigne;
     }
 
-    public long getId() {
-        return id;
+    public int getIdProduit() {
+        return idProduit;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setIdProduit(int idProduit) {
+        this.idProduit = idProduit;
+    }
+
+    public long getIdFactureVente() {
+        return idFactureVente;
+    }
+
+    public void setIdFactureVente(long idFactureVente) {
+        this.idFactureVente = idFactureVente;
     }
 
     public int getQteVendu() {
@@ -31,27 +41,27 @@ public class LigneVente {
         QteVendu = qteVendu;
     }
 
-    public double getPrixAchat() {
+    public float getPrixAchat() {
         return prixAchat;
     }
 
-    public void setPrixAchat(double prixAchat) {
+    public void setPrixAchat(float prixAchat) {
         this.prixAchat = prixAchat;
     }
 
-    public double getPrixVente() {
+    public float getPrixVente() {
         return prixVente;
     }
 
-    public void setPrixVente(double prixVente) {
+    public void setPrixVente(float prixVente) {
         this.prixVente = prixVente;
     }
 
-    public double getBeneficeLigne() {
+    public float getBeneficeLigne() {
         return beneficeLigne;
     }
 
-    public void setBeneficeLigne(double beneficeLigne) {
+    public void setBeneficeLigne(float beneficeLigne) {
         this.beneficeLigne = beneficeLigne;
     }
 }

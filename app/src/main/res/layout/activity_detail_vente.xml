@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailVenteActivity">
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_facturevente" />
+
+    <TextView
+        android:id="@+id/idTvidFactureVClientDetailVente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:text="#3 by Mohammed yazid"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/idTvRemiseDetailVente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Remise : 100 dzd"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/idTvidFactureVClientDetailVente"
+        app:layout_constraintTop_toBottomOf="@+id/idTvidFactureVClientDetailVente" />
+
+    <TextView
+        android:id="@+id/idTvMontantTotaleDetailVente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="100000 DZD"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/idTvRemiseDetailVente"
+        app:layout_constraintTop_toBottomOf="@+id/idTvRemiseDetailVente" />
+
+    <TextView
+        android:id="@+id/idTvDateHeureFactureDetailVente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:text="yyyy/mm/dd  hh:mm:ss"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTvMontantTotaleDetailVente" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/idRVDetailVente"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/idBtnSuprimerFactureDetailVente"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTvDateHeureFactureDetailVente" />
+
+    <Button
+        android:id="@+id/idBtnSuprimerFactureDetailVente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Supprimer la facture"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

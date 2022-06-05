@@ -11,6 +11,7 @@ import com.example.pfeact.myClasses.Client;
 import com.example.pfeact.myClasses.FactureVente;
 import com.example.pfeact.myClasses.Famille;
 import com.example.pfeact.myClasses.Fournisseur;
+import com.example.pfeact.myClasses.LigneVente;
 import com.example.pfeact.myClasses.Produit;
 
 import java.text.SimpleDateFormat;
@@ -470,7 +471,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return fournisseurArrayList;
     }
-    public ArrayList<FactureVente> getFactureVenteFromTo(String dateDebut , String dateFin){
+    /*public ArrayList<FactureVente> getFactureVenteFromTo(String dateDebut , String dateFin){
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM FactureVente where dateVente between "+dateDebut+" and "+dateFin,null);
@@ -486,6 +487,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return factureVenteArrayList;
     }
+
+     */
 
 
 
@@ -557,7 +560,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         ContentValues cv = new ContentValues();
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
 
         cv.put("idClient",idClient);
@@ -672,6 +675,93 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return 1;
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public ArrayList<FactureVente> afficherFactureVente(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM FactureVente order by dateVente desc, heureVente desc",null);
+
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                        cursor.getString(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return factureVenteArrayList;
+    }
+
+
+    public void supprimerFactureVente(long idFacture, ArrayList<LigneVente> ligneVenteArrayList, ArrayList<Produit> produitArrayList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        int qte = 0;
+
+        for (int i=0;i<ligneVenteArrayList.size();i++){
+
+            for (int j=0;j<produitArrayList.size();j++){
+                if (ligneVenteArrayList.get(i).getIdProduit() == produitArrayList.get(j).getId()){
+                    qte = produitArrayList.get(j).getQte();
+                }
+
+                cv.put("idProduit", ligneVenteArrayList.get(i).getIdProduit());
+                cv.put("qte", qte+ligneVenteArrayList.get(i).getQteVendu());
+
+
+                db.update("Produit", cv, "idProduit = ? ", new String[]{String.valueOf(ligneVenteArrayList.get(i).getIdProduit())});
+            }
+        }
+
+        db.delete("LigneVente", "idFactureVente = ? ", new String[]{String.valueOf(idFacture)});
+
+
+        db.delete("FactureVente", "idFactureVente = ? ", new String[]{String.valueOf(idFacture)});
+
+        db.close();
+    }
+
+
+
+    public ArrayList<LigneVente> afficherLigneVente(long idFacture){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM LigneVente where idFactureVente = "+idFacture+" ;",null);
+
+        ArrayList<LigneVente> ligneVenteArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                ligneVenteArrayList.add(new LigneVente(cursor.getInt(0),cursor.getLong(1),cursor.getInt(2),
+                        cursor.getFloat(3),cursor.getFloat(4),cursor.getFloat(5)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return ligneVenteArrayList;
+    }
+
+
+
 
 
 

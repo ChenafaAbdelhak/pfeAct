@@ -12,6 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PfeAct">
         <activity
+            android:name=".DetailVenteActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+        <activity
+            android:name=".VentesActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+        <activity
             android:name=".EditFamilleActivity"
             android:exported="false" />
         <activity

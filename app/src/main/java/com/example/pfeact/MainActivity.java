@@ -51,12 +51,12 @@ public class MainActivity extends DrawerBaseActivity {
                 startActivity(new Intent(getApplicationContext(),ComptoirActivity.class));
             }
         });
-       /* cardVentes.setOnClickListener(new View.OnClickListener() {
+        cardVentes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),));
+                startActivity(new Intent(getApplicationContext(),VentesActivity.class));
             }
-        });
+        });/*
         cardAchates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
