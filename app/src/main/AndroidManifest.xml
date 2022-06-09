@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PfeAct">
         <activity
+            android:name=".VoirBeneficieActivity"
+            android:exported="false" />
+        <activity
             android:name=".RapportsDeSemaineActivity"
             android:exported="false" />
         <activity

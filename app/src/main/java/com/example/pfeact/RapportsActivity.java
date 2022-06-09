@@ -12,7 +12,7 @@ import android.view.View;
 
 public class
 RapportsActivity extends AppCompatActivity implements View.OnClickListener {
-    CardView monthlyRapportCard,weeklyRapportCard;
+    CardView monthlyRapportCard,weeklyRapportCard,voirBeneficieCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +21,11 @@ RapportsActivity extends AppCompatActivity implements View.OnClickListener {
 
         monthlyRapportCard=findViewById(R.id.idMonthlyRapport);
         weeklyRapportCard=findViewById(R.id.idWeeklyRapport);
+        voirBeneficieCard=findViewById(R.id.idVoirBenefecie);
 
         monthlyRapportCard.setOnClickListener(this);
         weeklyRapportCard.setOnClickListener(this);
+        voirBeneficieCard.setOnClickListener(this);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -57,6 +59,10 @@ RapportsActivity extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.idWeeklyRapport:
                 intent = new Intent(this, RapportsDeSemaineActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.idVoirBenefecie:
+                intent = new Intent(this, VoirBeneficieActivity.class);
                 startActivity(intent);
                 break;
         }
