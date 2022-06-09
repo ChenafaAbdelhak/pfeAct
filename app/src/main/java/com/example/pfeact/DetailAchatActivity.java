@@ -16,62 +16,59 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pfeact.myClasses.ClientAdapter;
+import com.example.pfeact.myClasses.LigneAchat;
+import com.example.pfeact.myClasses.LigneAchatAdapter;
 import com.example.pfeact.myClasses.LigneVente;
 import com.example.pfeact.myClasses.LigneVenteAdapter;
 import com.example.pfeact.myClasses.Produit;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class DetailVenteActivity extends AppCompatActivity {
-
+public class DetailAchatActivity extends AppCompatActivity {
     private Bundle args;
     private long idFacture;
-    private float remise,montantTotal;
-    private String dateVente,heureVente,nomClient;
-    private RecyclerView ventesRV;
+    private float montantTotal;
+    private String dateAchat, heureAchat, nomFournisseur;
+    private RecyclerView achatsRV;
     private DatabaseHelper databaseHelper;
     private AlertDialog.Builder builder;
-    private LigneVenteAdapter adapter;
-    private ArrayList<LigneVente> ligneVenteArrayList;
+    private LigneAchatAdapter adapter;
+    private ArrayList<LigneAchat> ligneAchatArrayList;
     private ArrayList<Produit> produitArrayList;
-    private TextView idFactureNclientTv,remiseTv,montantTotalTv,dateHeuretv;
+    private TextView idFactureNfournisseurTv, montantTotalTv, dateHeuretv;
     private Button deleteFactureBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_vente);
+        setContentView(R.layout.activity_detail_achat);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Detail facture");
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Detail facture achat");
         }
 
-        if (getIntent().getExtras() != null){
-        args = getIntent().getExtras();
-        idFacture = args.getLong("idFacture");
-        remise = args.getFloat("remise");
-        montantTotal = args.getFloat("montantTotal");
-        nomClient = args.getString("nomClient");
-        dateVente = args.getString("dateVente");
-        heureVente = args.getString("heureVente");}
+        if (getIntent().getExtras() != null) {
+            args = getIntent().getExtras();
+            idFacture = args.getLong("idFacture");
+            montantTotal = args.getFloat("montantTotal");
+            nomFournisseur = args.getString("nomFournisseur");
+            dateAchat = args.getString("dateAchat");
+            heureAchat = args.getString("heureAchat");
+        }
 
-        ventesRV = findViewById(R.id.idRVDetailVente);
+        achatsRV = findViewById(R.id.idRVDetailAchat);
 
-        idFactureNclientTv = findViewById(R.id.idTvidFactureVClientDetailVente);
-        remiseTv = findViewById(R.id.idTvRemiseDetailVente);
-        montantTotalTv = findViewById(R.id.idTvMontantTotaleDetailVente);
-        dateHeuretv = findViewById(R.id.idTvDateHeureFactureDetailVente);
-        deleteFactureBtn = findViewById(R.id.idBtnSuprimerFactureDetailVente);
+        idFactureNfournisseurTv = findViewById(R.id.idTvidFactureAFournisseurDetailAchat);
+        montantTotalTv = findViewById(R.id.idTvMontantTotaleDetailAchat);
+        dateHeuretv = findViewById(R.id.idTvDateHeureFactureDetailAchat);
+        deleteFactureBtn = findViewById(R.id.idBtnSuprimerFactureDetailAchat);
         builder = new AlertDialog.Builder(this);
 
-        idFactureNclientTv.setText("Facture : #"+idFacture+"   Client: "+nomClient);
-        remiseTv.setText("Remise : "+remise+" DZD");
-        montantTotalTv.setText(""+montantTotal+" DZD");
-        dateHeuretv.setText(""+dateVente+"  "+heureVente);
+        idFactureNfournisseurTv.setText("Facture : #" + idFacture + "   Fournisseur: " + nomFournisseur);
+        montantTotalTv.setText("" + montantTotal + " DZD");
+        dateHeuretv.setText("" + dateAchat + "  " + heureAchat);
 
         buildRecyclerView();
 
@@ -83,10 +80,10 @@ public class DetailVenteActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ArrayList<Produit> produitArrayList = databaseHelper.afficherProduits();
-                                databaseHelper.supprimerFactureVente(idFacture,ligneVenteArrayList,produitArrayList);
-                                Toast.makeText(getApplicationContext(),"facture supprimée avec succès",Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(DetailVenteActivity.this, VentesActivity.class));
-                                overridePendingTransition(0,0);
+                                databaseHelper.supprimerFactureAchat(idFacture, ligneAchatArrayList, produitArrayList);
+                                Toast.makeText(getApplicationContext(), "facture supprimée avec succès", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(DetailAchatActivity.this, AchatsActivity.class));
+                                overridePendingTransition(0, 0);
                             }
                         })
                         .setNegativeButton("Non", new DialogInterface.OnClickListener() {
@@ -99,17 +96,14 @@ public class DetailVenteActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                startActivity(new Intent(this, VentesActivity.class));
-                overridePendingTransition(0,0);
+                startActivity(new Intent(this, AchatsActivity.class));
+                overridePendingTransition(0, 0);
 
                 return true;
         }
@@ -119,28 +113,27 @@ public class DetailVenteActivity extends AppCompatActivity {
     private void buildRecyclerView() {
 
 
-
         // below line we are creating a new array list
         databaseHelper = new DatabaseHelper(this);
 
-        ligneVenteArrayList = new ArrayList<>();
+        ligneAchatArrayList = new ArrayList<>();
         produitArrayList = new ArrayList<>();
 
-        ligneVenteArrayList = databaseHelper.afficherLigneVente(idFacture);
+        ligneAchatArrayList = databaseHelper.afficherLigneAchat(idFacture);
         produitArrayList = databaseHelper.afficherProduits();
         // initializing our adapter class.
-        adapter = new LigneVenteAdapter(ligneVenteArrayList, produitArrayList,DetailVenteActivity.this);
+        adapter = new LigneAchatAdapter(ligneAchatArrayList, produitArrayList, DetailAchatActivity.this);
 
         // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        ventesRV.setHasFixedSize(true);
+        achatsRV.setHasFixedSize(true);
 
         // setting layout manager
         // to our recycler view.
-        ventesRV.setLayoutManager(manager);
+        achatsRV.setLayoutManager(manager);
 
         // setting adapter to
         // our recycler view.
-        ventesRV.setAdapter(adapter);
+        achatsRV.setAdapter(adapter);
     }
 }

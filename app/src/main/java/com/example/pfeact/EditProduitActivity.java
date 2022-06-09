@@ -270,6 +270,9 @@ public class EditProduitActivity extends AppCompatActivity {
 
             if (resOp == 1)
                 Toast.makeText(this, "achat effectuer avec succès ",Toast.LENGTH_LONG ).show();
+            Intent intent = new Intent(getApplicationContext(), ProduitsActivity.class);
+            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(intent);
 
         }
 

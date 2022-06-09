@@ -56,13 +56,13 @@ public class MainActivity extends DrawerBaseActivity {
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),VentesActivity.class));
             }
-        });/*
+        });
         cardAchates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),));
+                startActivity(new Intent(getApplicationContext(),AchatsActivity.class));
             }
-        });*/
+        });
         cardRapports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

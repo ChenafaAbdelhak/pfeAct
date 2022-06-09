@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailVenteActivity">
+    tools:context=".DetailAchatActivity">
 
     <ImageView
         android:id="@+id/imageView6"
@@ -14,10 +14,10 @@
         android:layout_marginStart="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_facturevente" />
+        app:srcCompat="@drawable/ic_factureachat" />
 
     <TextView
-        android:id="@+id/idTvidFactureVClientDetailVente"
+        android:id="@+id/idTvidFactureAFournisseurDetailAchat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -28,39 +28,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/idTvRemiseDetailVente"
+        android:id="@+id/idTvMontantTotaleDetailAchat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Remise : 100 dzd"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/idTvidFactureVClientDetailVente"
-        app:layout_constraintTop_toBottomOf="@+id/idTvidFactureVClientDetailVente" />
-
-    <TextView
-        android:id="@+id/idTvMontantTotaleDetailVente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="10dp"
         android:text="100000 DZD"
-        android:textColor="@color/black"
+        android:textColor="@color/red"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/idTvRemiseDetailVente"
-        app:layout_constraintTop_toBottomOf="@+id/idTvRemiseDetailVente" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idTvidFactureAFournisseurDetailAchat" />
 
     <TextView
-        android:id="@+id/idTvDateHeureFactureDetailVente"
+        android:id="@+id/idTvDateHeureFactureDetailAchat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:text="yyyy/mm/dd  hh:mm:ss"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idTvMontantTotaleDetailVente" />
+        app:layout_constraintTop_toBottomOf="@+id/idTvMontantTotaleDetailAchat" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/idRVDetailVente"
+        android:id="@+id/idRVDetailAchat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
@@ -68,12 +59,12 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="20dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/idBtnSuprimerFactureDetailVente"
+        app:layout_constraintBottom_toTopOf="@+id/idBtnSuprimerFactureDetailAchat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idTvDateHeureFactureDetailVente" />
+        app:layout_constraintTop_toBottomOf="@+id/idTvDateHeureFactureDetailAchat" />
 
     <Button
-        android:id="@+id/idBtnSuprimerFactureDetailVente"
+        android:id="@+id/idBtnSuprimerFactureDetailAchat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Supprimer la facture"

@@ -16,11 +16,13 @@ import java.util.ArrayList;
 public class FactureVenteAdapter extends RecyclerView.Adapter<FactureVenteAdapter.FactureVenteViewHolder>{
 
     private ArrayList<FactureVente> factureVenteArrayList;
+    private ArrayList<Client> clientArrayList;
     private Context context;
     private OnFactureVenteListener onFactureVenteListener;
 
-    public FactureVenteAdapter(ArrayList<FactureVente> factureVenteArrayList, Context context, OnFactureVenteListener onFactureVenteListener) {
+    public FactureVenteAdapter(ArrayList<FactureVente> factureVenteArrayList, ArrayList<Client> clientArrayList, Context context, OnFactureVenteListener onFactureVenteListener) {
         this.factureVenteArrayList = factureVenteArrayList;
+        this.clientArrayList = clientArrayList;
         this.context = context;
         this.onFactureVenteListener = onFactureVenteListener;
     }
@@ -36,11 +38,17 @@ public class FactureVenteAdapter extends RecyclerView.Adapter<FactureVenteAdapte
     @Override
     public void onBindViewHolder(@NonNull FactureVenteAdapter.FactureVenteViewHolder holder, int position) {
         FactureVente modal = factureVenteArrayList.get(position);
+        Client client = clientArrayList.get(0);
+        
+        for (int i=0;i<clientArrayList.size();i++){
+            if (clientArrayList.get(i).getId_client() == modal.getIdClient())
+                client = clientArrayList.get(i);
+        }
 
         holder.dateFactureVenteTV.setText(modal.getDateVente());
         holder.heureFactureVenteTV.setText(modal.getHeureVente());
         holder.idFactureVenteTV.setText("id Facture : #"+modal.getId());
-        holder.nomClientTV.setText("Client : "+modal.getIdClient());
+        holder.nomClientTV.setText("Client : "+client.getNomClient());
         holder.montantTotalFactureVenteTV.setText("DZD "+modal.getMontantTotal());
     }
 
@@ -52,8 +60,8 @@ public class FactureVenteAdapter extends RecyclerView.Adapter<FactureVenteAdapte
     public class FactureVenteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView dateFactureVenteTV,heureFactureVenteTV,idFactureVenteTV,nomClientTV,montantTotalFactureVenteTV;
-        OnFactureVenteListener onFactureVenteListener;
 
+        OnFactureVenteListener onFactureVenteListener;
         public FactureVenteViewHolder(@NonNull View itemView, OnFactureVenteListener onFactureVenteListener) {
             super(itemView);
 
@@ -73,9 +81,23 @@ public class FactureVenteAdapter extends RecyclerView.Adapter<FactureVenteAdapte
                     onFactureVenteListener.onFactureVenteClick(this.getLayoutPosition());
 
         }
+
     }
 
+
+    public void setArraylist(ArrayList<FactureVente> filtredFactureVenteArrayList) {
+        factureVenteArrayList = filtredFactureVenteArrayList;
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<FactureVente> getArraylist() {
+
+        return factureVenteArrayList;
+    }
+
+
     public interface OnFactureVenteListener{
+
         void onFactureVenteClick(int position);
     }
 }

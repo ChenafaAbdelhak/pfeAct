@@ -232,7 +232,7 @@ public class CartDialog extends BottomSheetDialogFragment implements ProduitCart
         d.setNegativeButton("annuler", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getContext(),"negative button",Toast.LENGTH_SHORT).show();
+
             }
         });
             AlertDialog alertDialog = d.create();

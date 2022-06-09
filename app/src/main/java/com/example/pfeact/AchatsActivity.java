@@ -3,7 +3,6 @@ package com.example.pfeact;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,29 +22,28 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pfeact.myClasses.Client;
-import com.example.pfeact.myClasses.ClientAdapter;
+import com.example.pfeact.myClasses.FactureAchat;
+import com.example.pfeact.myClasses.FactureAchatAdapter;
 import com.example.pfeact.myClasses.FactureVente;
 import com.example.pfeact.myClasses.FactureVenteAdapter;
-import com.example.pfeact.myClasses.FamilleAdapter;
+import com.example.pfeact.myClasses.Fournisseur;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Locale;
 
-public class VentesActivity extends AppCompatActivity implements FactureVenteAdapter.OnFactureVenteListener {
+public class AchatsActivity extends AppCompatActivity implements FactureAchatAdapter.OnFactureAchatListener {
 
-    private ArrayList<FactureVente> factureVenteArrayList;
-    private ArrayList<FactureVente> filteredFactureVenteArrayList;
-    private ArrayList<Client> clientArrayList;
+    private ArrayList<FactureAchat> factureAchatArrayList;
+    private ArrayList<FactureAchat> filteredFactureAchatArrayList;
+    private ArrayList<Fournisseur> fournisseurArrayList;
     private  DatabaseHelper databaseHelper;
-    private FactureVenteAdapter adapter;
-    private RecyclerView factureVenteRV;
+    private FactureAchatAdapter adapter;
+    private RecyclerView factureAchatRV;
     private Bundle bundle;
     private EditText dateDebutEt,dateFinEt;
     private RadioGroup dateRadioGroup;
@@ -54,38 +52,38 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ventes);
+        setContentView(R.layout.activity_achats);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle("Ventes");
+            getSupportActionBar().setTitle("Achats");
         }
 
-        factureVenteRV = (RecyclerView)findViewById(R.id.idRVFactureVente);
+        factureAchatRV = (RecyclerView)findViewById(R.id.idRVFactureAchat);
 
 
-        factureVenteArrayList = new ArrayList<>();
-        clientArrayList = new ArrayList<>();
-        databaseHelper = new DatabaseHelper(VentesActivity.this);
-        factureVenteArrayList = databaseHelper.afficherFactureVente();
-        clientArrayList = databaseHelper.afficherClient();
+        factureAchatArrayList = new ArrayList<>();
+        fournisseurArrayList = new ArrayList<>();
+        databaseHelper = new DatabaseHelper(AchatsActivity.this);
+        factureAchatArrayList = databaseHelper.afficherFactureAchat();
+        fournisseurArrayList = databaseHelper.afficherFournisseurs();
 
         //factureVenteArrayList.sort();
         // initializing our adapter class.
-        adapter = new FactureVenteAdapter(factureVenteArrayList,clientArrayList, VentesActivity.this,this);
+        adapter = new FactureAchatAdapter(factureAchatArrayList,fournisseurArrayList, AchatsActivity.this,this);
 
         // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        factureVenteRV.setHasFixedSize(true);
+        factureAchatRV.setHasFixedSize(true);
 
         // setting layout manager
         // to our recycler view.
-        factureVenteRV.setLayoutManager(manager);
+        factureAchatRV.setLayoutManager(manager);
 
         // setting adapter to
         // our recycler view.
-        factureVenteRV.setAdapter(adapter);
+        factureAchatRV.setAdapter(adapter);
     }
 
     @Override
@@ -105,15 +103,15 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
                 dateRadioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_date);
                 Spinner spinner = (Spinner) dialogView.findViewById(R.id.idSpFilterClientVentes);
 
-                ArrayList<Client> clientArrayList;
-                clientArrayList = databaseHelper.afficherClient();
-                clientArrayList.add(0,new Client(-1,"Tous les clients","",0,0,""));
-                ArrayAdapter<Client> clientArrayAdapter;
-                clientArrayAdapter = new ArrayAdapter<Client>(getApplicationContext(),
+                ArrayList<Fournisseur> fournisseurArrayLists;
+                fournisseurArrayLists = databaseHelper.afficherFournisseurs();
+                fournisseurArrayLists.add(0,new Fournisseur(-1,"Tous les fournisseurs","","",0));
+                ArrayAdapter<Fournisseur> fournisseurArrayAdapter;
+                fournisseurArrayAdapter = new ArrayAdapter<Fournisseur>(getApplicationContext(),
                         android.R.layout.simple_spinner_item,
-                        clientArrayList);
-                clientArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(clientArrayAdapter);
+                        fournisseurArrayLists);
+                fournisseurArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(fournisseurArrayAdapter);
 
                 dateRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
@@ -152,7 +150,7 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
                     @Override
                     public void onClick(View view) {
                         dateRadioGroup.clearCheck();
-                        new DatePickerDialog(VentesActivity.this,dateDebutL,myCalendar.get(Calendar.YEAR)
+                        new DatePickerDialog(AchatsActivity.this,dateDebutL,myCalendar.get(Calendar.YEAR)
                                 ,myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                     }
                 });
@@ -161,7 +159,7 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
                     @Override
                     public void onClick(View view) {
                         dateRadioGroup.clearCheck();
-                        new DatePickerDialog(VentesActivity.this,dateFinL,myCalendar.get(Calendar.YEAR)
+                        new DatePickerDialog(AchatsActivity.this,dateFinL,myCalendar.get(Calendar.YEAR)
                                 ,myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                     }
                 });
@@ -169,10 +167,10 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
                 d.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Client client = (Client) spinner.getSelectedItem();
+                        Fournisseur fournisseur = (Fournisseur) spinner.getSelectedItem();
 
                         if ((dateDebutEt.getText().toString().contains("yyyy") || dateFinEt.getText().toString().contains("yyyy")) &&
-                                (dateRadioGroup.getCheckedRadioButtonId() == -1) && (client.getId_client() == -1)) {
+                                (dateRadioGroup.getCheckedRadioButtonId() == -1) && (fournisseur.getId() == -1)) {
                             Toast.makeText(getApplicationContext(), "veuillez sélectionner une date valide", Toast.LENGTH_LONG).show();
                         } else {
                             String dateDebut = dateDebutEt.getText().toString();
@@ -181,11 +179,11 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
                             int selectedId = dateRadioGroup.getCheckedRadioButtonId();
                             RadioButton radioButton  = (RadioButton) dateRadioGroup.findViewById(selectedId);
                             if (selectedId == -1) {
-                                filteredFactureVenteArrayList = databaseHelper.getFilteredFactureVente(dateDebut, dateFin, "no item selected", client.getId_client());
-                                adapter.setArraylist(filteredFactureVenteArrayList);
+                                filteredFactureAchatArrayList = databaseHelper.getFilteredFactureAchat(dateDebut, dateFin, "no item selected", fournisseur.getId());
+                                adapter.setArraylist(filteredFactureAchatArrayList);
                             }else {
-                                filteredFactureVenteArrayList = databaseHelper.getFilteredFactureVente(dateDebut, dateFin, String.valueOf(radioButton.getText()), client.getId_client());
-                                adapter.setArraylist(filteredFactureVenteArrayList);
+                                filteredFactureAchatArrayList = databaseHelper.getFilteredFactureAchat(dateDebut, dateFin, String.valueOf(radioButton.getText()), fournisseur.getId());
+                                adapter.setArraylist(filteredFactureAchatArrayList);
                             }
                         }
                     }
@@ -218,26 +216,28 @@ public class VentesActivity extends AppCompatActivity implements FactureVenteAda
 
 
     @Override
-    public void onFactureVenteClick(int position) {
-        FactureVente factureVente = adapter.getArraylist().get(position);
+    public void onFactureAchatClick(int position) {
+
+        FactureAchat factureAchat = adapter.getArraylist().get(position);
         //Toast.makeText(getApplicationContext(),"g  "+factureVente.getId(),Toast.LENGTH_LONG).show();
         bundle = new Bundle();
-        String nomClient = "";
-        bundle.putLong("idFacture",factureVente.getId());
-        bundle.putFloat("remise",factureVente.getRemise());
-        bundle.putFloat("montantTotal",factureVente.getMontantTotal());
-        bundle.putString("dateVente",factureVente.getDateVente());
-        bundle.putString("heureVente",factureVente.getHeureVente());
+        String nomFournisseur = "";
+        bundle.putLong("idFacture",factureAchat.getId());
+        bundle.putFloat("montantTotal",factureAchat.getMontantTotal());
+        bundle.putString("dateAchat",factureAchat.getDateAchat());
+        bundle.putString("heureAchat",factureAchat.getHeureAchat());
 
-        for (int i=0;i<clientArrayList.size();i++){
-            if (factureVente.getIdClient() == clientArrayList.get(i).getId_client())
-                nomClient = clientArrayList.get(i).getNomClient();
+        for (int i=0;i<fournisseurArrayList.size();i++){
+            if (factureAchat.getIdFournisseur() == fournisseurArrayList.get(i).getId())
+                nomFournisseur = fournisseurArrayList.get(i).getNomF();
         }
 
-        bundle.putString("nomClient",nomClient);
-        Intent intent = new Intent(VentesActivity.this,DetailVenteActivity.class);
+        bundle.putString("nomFournisseur",nomFournisseur);
+        Intent intent = new Intent(AchatsActivity.this,DetailAchatActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
+
+
 
 
     }

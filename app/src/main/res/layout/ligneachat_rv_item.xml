@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/idLigneAchat_rv_item_layout">
+
+    <TextView
+        android:id="@+id/idTvQteAcheteDetailAchat"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+
+        android:foregroundGravity="center_vertical"
+        android:gravity="center_vertical"
+        android:text="3x"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/idTvPrixAchatUniDetailAchat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/idTvDesignationDetailAchat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:gravity="start"
+
+        android:maxLines="2"
+        android:text="Antichock samsung galaxy S20   ultra"
+
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+
+        app:layout_constraintStart_toEndOf="@+id/idTvQteAcheteDetailAchat"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/idTvPrixAchatUniDetailAchat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:text="3000 DZD"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/idTvQteAcheteDetailAchat"
+        app:layout_constraintTop_toBottomOf="@+id/idTvDesignationDetailAchat" />
+
+    <TextView
+        android:id="@+id/idTvPrixAchatQteTotDetailAchat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12000 DZD"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/idTvPrixAchatUniDetailAchat" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="#A3A3A3"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/idTvPrixAchatUniDetailAchat" />
+</androidx.constraintlayout.widget.ConstraintLayout>

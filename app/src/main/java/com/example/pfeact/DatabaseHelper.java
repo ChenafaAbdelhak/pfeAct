@@ -8,9 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.pfeact.myClasses.Client;
+import com.example.pfeact.myClasses.FactureAchat;
 import com.example.pfeact.myClasses.FactureVente;
 import com.example.pfeact.myClasses.Famille;
 import com.example.pfeact.myClasses.Fournisseur;
+import com.example.pfeact.myClasses.LigneAchat;
 import com.example.pfeact.myClasses.LigneVente;
 import com.example.pfeact.myClasses.Produit;
 
@@ -88,6 +90,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente,idFamille) values('aaa','1235',5,10,100,1);");
         db.execSQL("insert into Famille( nomFamille) values('autre');");
         db.execSQL("insert into Fournisseur( nomFournisseur) values('default');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-05-05','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-01','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-06','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-07','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-08','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-09','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-10','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-11','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-12','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-13','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-20','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-29','13:50:50');");
+        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-30','13:50:50');");
+
         db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('ANONYME','_',0,0,'_');");
 
     }
@@ -132,6 +148,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.moveToFirst();
         int n = cursor.getInt(0);
+        cursor.close();
 
         if(n!=0){return  false;}
         else{return  true;}
@@ -453,7 +470,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-
     public ArrayList<Fournisseur> afficherFournisseurs(){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -471,6 +487,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return fournisseurArrayList;
     }
+
+
     /*public ArrayList<FactureVente> getFactureVenteFromTo(String dateDebut , String dateFin){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -489,7 +507,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
      */
-
 
 
     public long ajouterFournisseur(String nomFournisseur,String adressFournisseur,String phoneFournisseur){
@@ -761,6 +778,272 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public ArrayList<FactureVente> getFactureVenteFromTo(String dateDebut,String dateFin){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM FactureVente where dateVente between '"+dateDebut+"' and '"+dateFin+"' order by dateVente desc, heureVente desc",null);
+
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                        cursor.getString(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return factureVenteArrayList;
+    }
+
+
+    public ArrayList<FactureVente> getFilteredFactureVente(String dateDebut, String dateFin, String radioItem, int id_client) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        Cursor cursor = null;
+        if (dateDebut.contains("yyyy") && dateFin.contains("yyyy") && radioItem.contains("no item selected")){
+            cursor = db.rawQuery("SELECT * FROM FactureVente where  idClient = '" + id_client + "' order by dateVente desc, heureVente desc", null);
+            if(cursor.moveToFirst()){
+                do {
+                    factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                            cursor.getString(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureVenteArrayList;
+        }
+        if (!dateDebut.contains("yyyy") && !dateFin.contains("yyyy")){
+            if (id_client == -1){
+                cursor = db.rawQuery("SELECT * FROM FactureVente where dateVente between '" + dateDebut + "' and '" + dateFin + "' order by dateVente desc, heureVente desc", null);
+            }
+            else {
+                cursor = db.rawQuery("SELECT * FROM FactureVente where dateVente between '" + dateDebut + "' and '" + dateFin + "' and idClient = '" + id_client + "' order by dateVente desc, heureVente desc", null);
+            }
+            if(cursor.moveToFirst()){
+                do {
+                    factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                            cursor.getString(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureVenteArrayList;
+        }
+        if (!radioItem.contains("no item selected")){
+            if (radioItem.equals("Aujourd'hui")){
+                if (id_client == -1){
+
+                    cursor = db.rawQuery("select * from FactureVente where strftime('%d', dateVente) == strftime('%d', 'now') order by dateVente desc, heureVente desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureVente where strftime('%d', dateVente) == strftime('%d', 'now') and idClient = '" + id_client + "' order by dateVente desc, heureVente desc", null);
+                }
+            }
+            if (radioItem.equals("Hier")){
+                if (id_client == -1){
+
+                    cursor = db.rawQuery("select * from FactureVente where dateVente = DATE('now','-1 day') order by dateVente desc, heureVente desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureVente where dateVente = DATE('now','-1 day') and idClient = '" + id_client + "' order by dateVente desc, heureVente desc", null);
+                }
+            }
+            if (radioItem.equals("cette semaine")){
+                if (id_client == -1){
+
+                    cursor = db.rawQuery("select * from FactureVente where strftime('%W', dateVente) == strftime('%W', 'now') order by dateVente desc, heureVente desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureVente where strftime('%W', dateVente) == strftime('%W', 'now') and idClient = '" + id_client + "' order by dateVente desc, heureVente desc", null);
+                }
+            }
+            if (radioItem.equals("ce mois-ci")){
+                if (id_client == -1){
+
+                    cursor = db.rawQuery("select * from FactureVente where strftime('%m', dateVente) == strftime('%m', 'now') order by dateVente desc, heureVente desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureVente where strftime('%m', dateVente) == strftime('%m', 'now') and idClient = '" + id_client + "' order by dateVente desc, heureVente desc", null);
+                }
+            }
+
+            if(cursor.moveToFirst()){
+                do {
+                    factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                            cursor.getString(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureVenteArrayList;
+
+        }
+        return factureVenteArrayList;
+    }
+
+
+
+
+
+
+
+
+
+
+    public ArrayList<FactureAchat> getFilteredFactureAchat(String dateDebut, String dateFin, String radioItem, int id_fournisseur) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<FactureAchat> factureAchatArrayList = new ArrayList<>();
+        Cursor cursor = null;
+        if (dateDebut.contains("yyyy") && dateFin.contains("yyyy") && radioItem.contains("no item selected")){
+            cursor = db.rawQuery("SELECT * FROM FactureAchat where  idFournisseur = '" + id_fournisseur + "' order by dateAchat desc, heureAchat desc", null);
+            if(cursor.moveToFirst()){
+                do {
+                    factureAchatArrayList.add(new FactureAchat(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                            cursor.getString(3),cursor.getFloat(4)));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureAchatArrayList;
+        }
+        if (!dateDebut.contains("yyyy") && !dateFin.contains("yyyy")){
+            if (id_fournisseur == -1){
+                cursor = db.rawQuery("SELECT * FROM FactureAchat where dateAchat between '" + dateDebut + "' and '" + dateFin + "' order by dateAchat desc, heureAchat desc", null);
+            }
+            else {
+                cursor = db.rawQuery("SELECT * FROM FactureAchat where dateAchat between '" + dateDebut + "' and '" + dateFin + "' and idFournisseur = '" + id_fournisseur + "' order by dateAchat desc, heureAchat desc", null);
+            }
+            if(cursor.moveToFirst()){
+                do {
+                    factureAchatArrayList.add(new FactureAchat(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                            cursor.getString(3),cursor.getFloat(4)));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureAchatArrayList;
+        }
+        if (!radioItem.contains("no item selected")){
+            if (radioItem.equals("Aujourd'hui")){
+                if (id_fournisseur == -1){
+
+                    cursor = db.rawQuery("select * from FactureAchat where strftime('%d', dateAchat) == strftime('%d', 'now') order by dateAchat desc, heureAchat desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureAchat where strftime('%d', dateAchat) == strftime('%d', 'now') and idClient = '" + id_fournisseur + "' order by dateAchat desc, heureAchat desc", null);
+                }
+            }
+            if (radioItem.equals("Hier")){
+                if (id_fournisseur == -1){
+
+                    cursor = db.rawQuery("select * from FactureAchat where dateAchat = DATE('now','-1 day') order by dateAchat desc, heureAchat desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureAchat where dateAchat = DATE('now','-1 day') and idFournisseur = '" + id_fournisseur + "' order by dateAchat desc, heureAchat desc", null);
+                }
+            }
+            if (radioItem.equals("cette semaine")){
+                if (id_fournisseur == -1){
+
+                    cursor = db.rawQuery("select * from FactureAchat where strftime('%W', dateAchat) == strftime('%W', 'now') order by dateAchat desc, heureAchat desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureAchat where strftime('%W', dateAchat) == strftime('%W', 'now') and idFournisseur = '" + id_fournisseur + "' order by dateAchat desc, heureAchat desc", null);
+                }
+            }
+            if (radioItem.equals("ce mois-ci")){
+                if (id_fournisseur == -1){
+
+                    cursor = db.rawQuery("select * from FactureAchat where strftime('%m', dateAchat) == strftime('%m', 'now') order by dateAchat desc, heureAchat desc", null);
+                }else{
+                    cursor = db.rawQuery("select * from FactureAchat where strftime('%m', dateAchat) == strftime('%m', 'now') and idFournisseur = '" + id_fournisseur + "' order by dateAchat desc, heureAchat desc", null);
+                }
+            }
+
+            if(cursor.moveToFirst()){
+                do {
+                    factureAchatArrayList.add(new FactureAchat(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                            cursor.getString(3),cursor.getFloat(4)));
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureAchatArrayList;
+
+        }
+        return factureAchatArrayList;
+    }
+
+
+    public ArrayList<FactureAchat> afficherFactureAchat(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM FactureAchat order by dateAchat desc, heureAchat desc",null);
+
+        ArrayList<FactureAchat> factureAchatArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                factureAchatArrayList.add(new FactureAchat(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
+                        cursor.getString(3),cursor.getFloat(4)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return factureAchatArrayList;
+    }
+
+
+    public ArrayList<LigneAchat> afficherLigneAchat(long idFacture){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM LigneAchat where idFactureAchat = "+idFacture+" ;",null);
+
+        ArrayList<LigneAchat> ligneAchatArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                ligneAchatArrayList.add(new LigneAchat(cursor.getInt(0),cursor.getLong(1),cursor.getInt(2),
+                        cursor.getFloat(3),cursor.getFloat(4)));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return ligneAchatArrayList;
+    }
+
+
+
+    public void supprimerFactureAchat(long idFacture, ArrayList<LigneAchat> ligneAchatArrayList, ArrayList<Produit> produitArrayList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        int qte = 0;
+
+        for (int i=0;i<ligneAchatArrayList.size();i++){
+
+            for (int j=0;j<produitArrayList.size();j++){
+                if (ligneAchatArrayList.get(i).getIdProduit() == produitArrayList.get(j).getId()){
+                    qte = produitArrayList.get(j).getQte();
+                }
+
+                cv.put("idProduit", ligneAchatArrayList.get(i).getIdProduit());
+                cv.put("qte", qte-ligneAchatArrayList.get(i).getQteAchete());
+
+
+                db.update("Produit", cv, "idProduit = ? ", new String[]{String.valueOf(ligneAchatArrayList.get(i).getIdProduit())});
+            }
+        }
+
+        db.delete("LigneAchat", "idFactureAchat = ? ", new String[]{String.valueOf(idFacture)});
+
+
+        db.delete("FactureAchat", "idFactureAchat = ? ", new String[]{String.valueOf(idFacture)});
+
+        db.close();
+    }
+
+
+
+
+
+
 
 
 
@@ -779,5 +1062,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS LigneVente");
         onCreate(db);
     }
+
 }
 

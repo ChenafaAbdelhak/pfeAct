@@ -9,7 +9,7 @@
     <!--item for our search view with its id-->
     <item
         android:id="@+id/actionSearch"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_menu"
         android:title="Search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
@@ -22,6 +22,7 @@
         android:id="@+id/barcode"
         android:icon="@drawable/ic_barcode"
         android:title="code a barre"
+        android:iconTint="@color/white"
         app:showAsAction="always"/>
 
 </menu>

@@ -12,35 +12,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PfeAct">
         <activity
-            android:name=".DetailVenteActivity"
+            android:name=".DetailAchatActivity"
             android:exported="false"
             android:noHistory="true"/>
+        <activity
+            android:name=".AchatsActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+        <activity
+            android:name=".DetailVenteActivity"
+            android:exported="false"
+            android:noHistory="true" />
         <activity
             android:name=".VentesActivity"
             android:exported="false"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity
             android:name=".EditFamilleActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".AddFamilleActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".FamilleActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".EditProduitActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".AddProduit"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".EditFournisseurActivity"
             android:exported="false"
             android:noHistory="true" />
         <activity
             android:name=".AddFournisseurActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".RapportsActivity"
             android:exported="false" />
@@ -53,7 +67,8 @@
             android:noHistory="true" />
         <activity
             android:name=".AddClientActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".ComptoirActivity"
             android:exported="false" />
@@ -67,7 +82,8 @@
             android:noHistory="true" />
         <activity
             android:name=".ProduitsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".DrawerBaseActivity"
             android:exported="false" />
