@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pfeAct</string>
+    <string name="app_name">Mahally</string>
     <string name="menu_drawer_open">Drawer open</string>
     <string name="menu_drawer_close">Drawer close</string>
     <string name="title_activity_test">test</string>
@@ -14,7 +14,7 @@
     <string name="comptoir">Comptoir</string>
     <string name="sauvegarde_la_base_de_donne">Sauvegarde la base de données</string>
     <string name="restaurer_une_base_de_donne">Restaurer une base de données</string>
-    <string name="permission_stockage_obligatiore">Permission de stockage obligatiore</string>
+    <string name="permission_stockage_obligatiore">Permission de stockage obligatoire</string>
     <string name="backup_folder">PosBackup</string>
     <string name="devise_dapplication">DZD</string>
     <!-- TODO: Remove or change this placeholder text -->
