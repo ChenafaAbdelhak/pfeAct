@@ -3,19 +3,27 @@ package com.example.pfeact;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 public class
-RapportsActivity extends AppCompatActivity {
-//wassioa commit
-    //abdou commit
+RapportsActivity extends AppCompatActivity implements View.OnClickListener {
+    CardView monthlyRapportCard,weeklyRapportCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapports);
+
+        monthlyRapportCard=findViewById(R.id.idMonthlyRapport);
+        weeklyRapportCard=findViewById(R.id.idWeeklyRapport);
+
+        monthlyRapportCard.setOnClickListener(this);
+        weeklyRapportCard.setOnClickListener(this);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -36,5 +44,21 @@ RapportsActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        Intent intent;
+
+        switch(view.getId()) {
+            case R.id.idMonthlyRapport:
+                intent = new Intent(this,RapportsDeMoisActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.idWeeklyRapport:
+                intent = new Intent(this, RapportsDeSemaineActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }
