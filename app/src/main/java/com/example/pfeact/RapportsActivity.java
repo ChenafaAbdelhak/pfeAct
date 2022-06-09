@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-public class RapportsActivity extends AppCompatActivity {
-
+public class
+RapportsActivity extends AppCompatActivity {
+//wassioa commit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
