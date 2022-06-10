@@ -35,6 +35,7 @@ public class RapportsDeSemaineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapports_de_semaine);
 
+        db = new DatabaseHelper(this);
         barChart=findViewById(R.id.idBarChart);
         getData();
         BarDataSet barDataSet=new BarDataSet(barArraylist,"beneficie de semaine");
