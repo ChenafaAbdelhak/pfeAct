@@ -12,14 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PfeAct">
         <activity
+            android:name=".InfoGeneralActivity"
+            android:exported="false"
+            android:noHistory="true"/>
+        <activity
             android:name=".VoirBeneficieActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".RapportsDeSemaineActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".RapportsDeMoisActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:noHistory="true"/>
         <activity
             android:name=".DetailAchatActivity"
             android:exported="false"
@@ -66,7 +73,8 @@
             android:noHistory="true" />
         <activity
             android:name=".RapportsActivity"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".ParametresActivity"
             android:exported="false" />

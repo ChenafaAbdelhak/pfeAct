@@ -46,7 +46,7 @@ public class VoirBeneficieActivity extends AppCompatActivity {
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Voir Beneficie");
+            getSupportActionBar().setTitle("Voir Bénéfice");
         }
         factureVenteArrayList = new ArrayList<>();
 

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.pfeact.myClasses.FactureVente;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -23,16 +24,18 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RapportsDeMoisActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private Spinner spinner;
-    private PieChart pieChart;
+    private BarChart barChart;
     private ArrayList<BarEntry> barArraylist;
     private ArrayList<FactureVente> factureVenteArrayList;
     private float beneficeJan = 0;
@@ -41,26 +44,19 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
     private float beneficeAvril = 0;
     private float beneficemai = 0;
     private float beneficeJuin = 0;
-    private float beneficeJuillet = 0;
-    private float beneficeOut = 0;
-    private float beneficeSeptembre = 0;
-    private float beneficeOctobre = 0;
-    private float beneficeNovembre = 0;
-    private float beneficeDecembre = 0;
+
     private DatabaseHelper db;
     private String année = "2022";
     private int i;
-
-    private float[] yData={25.3f, 10.6f, 66.76f, 44.32f, 46.01f, 16.89f, 23.9f, 55.2f, 90.45f, 77f, 11.36f, 45.85f};
-    private String[] xData={"janvier","fevrier","mars","avril","mai","juin","juillet","out","septembre","octobre","novembre"};
+    private ArrayList<String> xAxisLabel = new ArrayList<>();
+    private String[] xData={"janvier","fevrier","mars","avril","mai","juin"};
+    private ArrayList<BarEntry> barEntriesArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapports_de_mois);
-
-        pieChart = findViewById(R.id.idPieChartMois);
-
+        barEntriesArrayList=new ArrayList<>();
         ActionBar actionBar = getSupportActionBar();
 
         // showing the back button in action bar
@@ -68,11 +64,86 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Rapports de mois");
         }
-      /*  factureVenteArrayList = db.getFactureVenteFromTo("01-01-" + année + "", "31-01-" + année + "");
+
+        barChart = findViewById(R.id.idBarChartMois);
+        db = new DatabaseHelper(this);
+
+        xAxisLabel.add("janvier");
+        xAxisLabel.add("fevrier");
+        xAxisLabel.add("mars");
+        xAxisLabel.add("avril");
+        xAxisLabel.add("mai");
+        xAxisLabel.add("juin");
+
+        factureVenteArrayList = db.getFactureVenteInMonth("01-01-" + année + "");
         for (i = 0; i < factureVenteArrayList.size(); i++) {
             factureVenteArrayList.get(i);
             beneficeJan = beneficeJan + factureVenteArrayList.get(i).getBeneficeFacture();
+        }
+        barEntriesArrayList.add(new BarEntry(0,beneficeJan));
 
+        factureVenteArrayList = db.getFactureVenteInMonth("01-02-" + année + "");
+        for (i = 0; i < factureVenteArrayList.size(); i++) {
+            factureVenteArrayList.get(i);
+            beneficefev = beneficefev + factureVenteArrayList.get(i).getBeneficeFacture();
+        }
+        barEntriesArrayList.add(new BarEntry(1,beneficefev));
+
+        factureVenteArrayList = db.getFactureVenteInMonth("01-03-" + année + "");
+        for (i = 0; i < factureVenteArrayList.size(); i++) {
+            factureVenteArrayList.get(i);
+            beneficemars = beneficemars + factureVenteArrayList.get(i).getBeneficeFacture();
+        }
+        barEntriesArrayList.add(new BarEntry(2,15000));
+
+        factureVenteArrayList = db.getFactureVenteInMonth("01-04-" + année + "");
+        for (i = 0; i < factureVenteArrayList.size(); i++) {
+            factureVenteArrayList.get(i);
+            beneficeAvril = beneficeAvril + factureVenteArrayList.get(i).getBeneficeFacture();
+        }
+        barEntriesArrayList.add(new BarEntry(3,beneficeAvril));
+
+        factureVenteArrayList = db.getFactureVenteInMonth("01-05-" + année + "");
+        for (i = 0; i < factureVenteArrayList.size(); i++) {
+            factureVenteArrayList.get(i);
+            beneficemai = beneficemai + factureVenteArrayList.get(i).getBeneficeFacture();
+        }
+        barEntriesArrayList.add(new BarEntry(4,beneficemai));
+
+        factureVenteArrayList = db.getFactureVenteInMonth("01-06-" + année + "");
+        for (i = 0; i < factureVenteArrayList.size(); i++) {
+            factureVenteArrayList.get(i);
+            beneficeJuin = beneficeJuin + factureVenteArrayList.get(i).getBeneficeFacture();
+        }
+        barEntriesArrayList.add(new BarEntry(5,beneficeJuin));
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xAxisLabel.get((int) value);
+
+            }
+        });
+        BarDataSet barDataSet=new BarDataSet(barEntriesArrayList,"Bénéfice par mois");
+        barChart.getXAxis().setLabelRotationAngle(90f);
+        BarData barData=new BarData(barDataSet);
+        barChart.setData(barData);
+        barDataSet.setValueTextColors(Collections.singletonList(Color.BLACK));
+        barDataSet.setValueTextSize(16f);
+
+
+
+
+
+
+
+
+      /*  factureVenteArrayList = db.getFactureVenteFromTo("01-01-" + année + "", "31-01-" + année + "");
+            for (i = 0; i < factureVenteArrayList.size(); i++) {
+            factureVenteArrayList.get(i);
+            beneficeJan = beneficeJan + factureVenteArrayList.get(i).getBeneficeFacture();
+            }
             factureVenteArrayList = db.getFactureVenteFromTo("01-02-" + année + "", "31-02-" + année + "");
             for (i = 0; i < factureVenteArrayList.size(); i++) {
                 factureVenteArrayList.get(i);
@@ -165,7 +236,7 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
             barChart.setDragEnabled(true);
             barChart.setScaleEnabled(true);
 
-        }*/
+        }
         pieChart.setRotationEnabled(true);
         pieChart.setHoleRadius(25f);
         pieChart.setTransparentCircleAlpha(0);
@@ -194,8 +265,10 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
 
             }
         });
-    }
 
+       */
+    }
+    /*
     private void addDataSet() {
         ArrayList<PieEntry> yEntys=new ArrayList<>();
         ArrayList<String> xEntrys=new ArrayList<>();
@@ -233,6 +306,8 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
         pieChart.invalidate();
 
     }
+
+     */
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -64,7 +64,7 @@ public class RapportsDeSemaineActivity extends AppCompatActivity {
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
         if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("beneficies de semaine");
+            getSupportActionBar().setTitle("bénéfice par jour");
 
         }
     }
@@ -87,14 +87,7 @@ public class RapportsDeSemaineActivity extends AppCompatActivity {
             xAxisLabel.add(currentDay);
         }
 
-        /*
-        barArraylist.add(new BarEntry(1f,0));
-        barArraylist.add(new BarEntry(3f,35));
-        barArraylist.add(new BarEntry(4f,100));
-        barArraylist.add(new BarEntry(5f,5));
-        barArraylist.add(new BarEntry(6f,50));
 
-         */
     }
 
     private String getPastDayDate(int i){

@@ -1126,19 +1126,106 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             }
 
-            if (cursor.moveToFirst()) {
-                do {
-                    factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
-                            cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
-            db.close();
-            return factureVenteArrayList;
 
         }
+        if (cursor.moveToFirst()) {
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
         return factureVenteArrayList;
     }
+
+    public int countProduits(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT count (*) FROM produit;",null);
+
+        cursor.moveToFirst();
+        int n = cursor.getInt(0);
+
+        db.close();
+        cursor.close();
+
+        return n;
+    }
+
+    public Produit getProduitPlusVendu(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select idProduit, sum(qteVendu) from LigneVente group by idProduit order by sum(qteVendu) desc LIMIT 1;",null);
+
+        cursor.moveToFirst();
+        int idProduit = cursor.getInt(0);
+        int ocuurence = cursor.getInt(1);
+
+        Cursor cursor2 = db.rawQuery("select * from Produit where idProduit = '"+idProduit+"';",null);
+        cursor2.moveToFirst();
+
+        Produit produit = new Produit(idProduit,cursor2.getString(1),"",ocuurence, 0,0 ,0 , 0);
+
+        db.close();
+        cursor.close();
+        cursor2.close();
+
+        return produit;
+    }
+
+    public float getCapitalTotalAchat(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM Produit",null);
+
+        ArrayList<Produit> produitArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                produitArrayList.add(new Produit(cursor.getInt(0),cursor.getString(1),cursor.getString(2),
+                        cursor.getInt(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getInt(6),0));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        float sommeTotal = 0;
+        for (int i=0;i<produitArrayList.size();i++){
+            Produit produit =produitArrayList.get(i);
+            sommeTotal = sommeTotal +(produit.getQte()*produit.getPrixAchat());
+        }
+        return sommeTotal;
+    }
+
+
+    public float getCapitalTotalVente(){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM Produit",null);
+
+        ArrayList<Produit> produitArrayList = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do {
+                produitArrayList.add(new Produit(cursor.getInt(0),cursor.getString(1),cursor.getString(2),
+                        cursor.getInt(3),cursor.getFloat(4),cursor.getFloat(5),cursor.getInt(6),0));
+            }while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        float sommeTotal = 0;
+        for (int i=0;i<produitArrayList.size();i++){
+            Produit produit =produitArrayList.get(i);
+            sommeTotal = sommeTotal +(produit.getQte()*produit.getPrixVente());
+        }
+        return sommeTotal;
+    }
+
+
 
 
 
