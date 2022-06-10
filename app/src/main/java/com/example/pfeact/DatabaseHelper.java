@@ -1039,27 +1039,106 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<FactureVente> getFactureVenteInDay(String date){
-        SQLiteDatabase db=this.getReadableDatabase();
+    public ArrayList<FactureVente> getFactureVenteInDay(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        ArrayList<FactureVente> factureVenteArrayList  = new ArrayList<>();
-        String query=" SELECT * FROM FatureVente WHERE dateVente = '"+date+"'";
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        String query = " SELECT * FROM FactureVente WHERE dateVente = '" + date + "'";
 
-        Cursor cursor=db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
             do {
-                factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
-                        cursor.getString(3), cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
-            }while (cursor.moveToNext());
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
 
         return factureVenteArrayList;
 
+    }
+
+
+    public ArrayList<FactureVente> getFactureVenteInMonth(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+
+
+        Cursor cursor = db.rawQuery("select * from FactureVente where strftime('%m', dateVente) == strftime('%m', '"+date+"') order by dateVente desc, heureVente desc", null);
+        if (cursor.moveToFirst()) {
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return factureVenteArrayList;
+
+    }
 
 
 
+    public ArrayList<FactureVente> getFactureVenteForBenefice(String dateDebut, String dateFin, String radioItem) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        Cursor cursor = null;
+
+        if (!dateDebut.contains("yyyy") && !dateFin.contains("yyyy")) {
+
+            cursor = db.rawQuery("SELECT * FROM FactureVente where dateVente between '" + dateDebut + "' and '" + dateFin + "' order by dateVente desc, heureVente desc", null);
+        }
+
+
+        else if (!radioItem.contains("no item selected")) {
+            if (radioItem.equals("Aujourd'hui")) {
+
+                cursor = db.rawQuery("select * from FactureVente where strftime('%d', dateVente) == strftime('%d', 'now') order by dateVente desc, heureVente desc", null);
+
+            }
+            if (radioItem.equals("Hier")) {
+
+
+                cursor = db.rawQuery("select * from FactureVente where dateVente = DATE('now','-1 day') order by dateVente desc, heureVente desc", null);
+
+            }
+            if (radioItem.equals("cette semaine")) {
+
+                cursor = db.rawQuery("select * from FactureVente where strftime('%W', dateVente) == strftime('%W', 'now') order by dateVente desc, heureVente desc", null);
+
+            }
+            if (radioItem.equals("ce mois-ci")) {
+
+                cursor = db.rawQuery("select * from FactureVente where strftime('%m', dateVente) == strftime('%m', 'now') order by dateVente desc, heureVente desc", null);
+
+            }
+            if (radioItem.equals("Total")) {
+
+                cursor = db.rawQuery("select * from FactureVente order by dateVente desc, heureVente desc", null);
+
+            }
+            if (radioItem.equals("cette année")) {
+
+                cursor = db.rawQuery("select * from FactureVente where strftime('%Y', dateVente) == strftime('%Y', 'now') order by dateVente desc, heureVente desc", null);
+
+            }
+
+            if (cursor.moveToFirst()) {
+                do {
+                    factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                            cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+            return factureVenteArrayList;
+
+        }
+        return factureVenteArrayList;
+    }
 
 
 
@@ -1080,6 +1159,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS LigneVente");
         onCreate(db);
     }
-
 }
 

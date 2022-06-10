@@ -7,38 +7,151 @@
     tools:context=".VoirBeneficieActivity">
 
     <EditText
-        android:id="@+id/idDebutSemaine"
-        android:layout_width="225dp"
+        android:id="@+id/idETDebutVoirBenefice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="52dp"
         android:gravity="center"
-        android:hint="entrer date debut semaine"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="93dp"
-        tools:layout_editor_absoluteY="65dp" />
+        android:text="[yyyy-mm-dd]"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView22"
+        android:focusable="false" />
 
     <EditText
-        android:id="@+id/idFinSemaine"
-        android:layout_width="225dp"
+        android:id="@+id/idETFinVoirBenefice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:hint="entrer date fin semaine"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="93dp"
-        tools:layout_editor_absoluteY="180dp" />
+        android:layout_marginEnd="24dp"
+        android:text="[yyyy-mm-dd]"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="false"
+        app:layout_constraintTop_toTopOf="@+id/idETDebutVoirBenefice" />
 
     <TextView
         android:id="@+id/idBeneficieTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:text="beneficie="
-        android:textSize="20dp"
-        android:visibility="invisible"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="328dp"
-        tools:ignore="MissingConstraints" />
+        android:text="      "
+        android:layout_marginStart="8dp"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/idBtnCalculerBenefice"
+
+        app:layout_constraintStart_toEndOf="@+id/textView23"
+        app:layout_constraintTop_toBottomOf="@+id/radio_dateBenefice"
+         />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="date de début"
+        app:layout_constraintBottom_toTopOf="@+id/idETDebutVoirBenefice"
+        app:layout_constraintEnd_toEndOf="@+id/idETDebutVoirBenefice"
+        app:layout_constraintStart_toStartOf="@+id/idETDebutVoirBenefice" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="date de fin"
+        app:layout_constraintBottom_toTopOf="@+id/idETFinVoirBenefice"
+        app:layout_constraintEnd_toEndOf="@+id/idETFinVoirBenefice"
+        app:layout_constraintStart_toStartOf="@+id/idETFinVoirBenefice" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Date personnalisée :"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radio_dateBenefice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewBenefice">
+
+
+
+        <RadioButton
+            android:id="@+id/radio_todayBenefice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aujourd'hui" />
+
+
+        <RadioButton
+            android:id="@+id/radio_thisweekBenefice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cette semaine" />
+
+        <RadioButton
+            android:id="@+id/radio_thismonthBenefice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ce mois-ci" />
+
+        <RadioButton
+            android:id="@+id/radio_thisyearBenefice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cette année" />
+        <RadioButton
+            android:id="@+id/radio_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/idBtnCalculerBenefice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Calculer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"/>
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="Bénéfice :"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/idBeneficieTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/idBeneficieTV"
+        app:layout_constraintVertical_bias="0.0" />
+    <View
+        android:id="@+id/viewBenefice"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#A3A3A3"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/idETDebutVoirBenefice" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

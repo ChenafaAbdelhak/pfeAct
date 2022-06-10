@@ -4,118 +4,155 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pfeact.myClasses.FactureVente;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class VoirBeneficieActivity extends AppCompatActivity {
-    private EditText debutSemaineEdt, finSemaineEdt;
+    private EditText dateDebutEt, dateFinEt;
     private TextView beneficieTV;
-    private String debutSemaine, finSemaine;
     private DatePickerDialog.OnDateSetListener setListener, setListener2;
     private ArrayList<FactureVente> factureVenteArrayList;
-    private DatabaseHelper db;
-    private float beneficie;
+    private DatabaseHelper databaseHelper;
+    private RadioGroup dateRadioGroup;
+    private Button calculerBeneficeBtn;
+    final Calendar myCalendar= Calendar.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voir_beneficie);
-
-        debutSemaineEdt = findViewById(R.id.idDebutSemaine);
-        finSemaineEdt = findViewById(R.id.idFinSemaine);
-        beneficieTV = findViewById(R.id.idBeneficieTV);
-
-        debutSemaine = debutSemaineEdt.getText().toString();
-        finSemaine = finSemaineEdt.getText().toString();
-
-        beneficie=getData();
-        beneficieTV.setText("la benefice=" + beneficie);
-        beneficieTV.setVisibility(View.VISIBLE);
-
-
-
         ActionBar actionBar = getSupportActionBar();
         // showing the back button in action bar
         actionBar.setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Voir Beneficie");
         }
+        factureVenteArrayList = new ArrayList<>();
 
-        Calendar calendar = Calendar.getInstance();
-        final int year = calendar.get(Calendar.YEAR);
-        final int month = calendar.get(Calendar.MONTH);
-        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+        dateDebutEt = findViewById(R.id.idETDebutVoirBenefice);
+        dateFinEt = findViewById(R.id.idETFinVoirBenefice);
+        beneficieTV = findViewById(R.id.idBeneficieTV);
+        databaseHelper = new DatabaseHelper(this);
+        dateRadioGroup = (RadioGroup) findViewById(R.id.radio_dateBenefice);
+        calculerBeneficeBtn = findViewById(R.id.idBtnCalculerBenefice);
 
-        debutSemaineEdt.setOnClickListener(new View.OnClickListener() {
+        dateRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(i);
+                if(i != -1){
+                    dateDebutEt.setText("[yyyy-mm-dd]");
+                    dateFinEt.setText("[yyyy-mm-dd]");
+                }
+            }
+        });
+
+        DatePickerDialog.OnDateSetListener dateDebutL =new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH,month);
+                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                updateDateDebut();
+            }
+        };
+
+        DatePickerDialog.OnDateSetListener dateFinL =new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH,month);
+                myCalendar.set(Calendar.DAY_OF_MONTH,day);
+                updateDateFin();
+            }
+        };
+
+        dateDebutEt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(VoirBeneficieActivity.this, android.R.style.Theme_Holo_Dialog_MinWidth
-                        , setListener, year, month, day);
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                datePickerDialog.show();
+                dateRadioGroup.clearCheck();
+                new DatePickerDialog(VoirBeneficieActivity.this,dateDebutL,myCalendar.get(Calendar.YEAR)
+                        ,myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        setListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
-                String date = year + "-" + month + "-" + day;
-                debutSemaineEdt.setText(date);
-            }
-        }
-        ;
-        Calendar calendar2 = Calendar.getInstance();
-        final int yearFin = calendar2.get(Calendar.YEAR);
-        final int monthFin = calendar2.get(Calendar.MONTH);
-        final int dayFin = calendar2.get(Calendar.DAY_OF_MONTH);
 
-        finSemaineEdt.setOnClickListener(new View.OnClickListener()
-
-        {
+        dateFinEt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View view){
-                DatePickerDialog datePickerDialog = new DatePickerDialog(VoirBeneficieActivity.this, android.R.style.Theme_Holo_Dialog_MinWidth
-                        , setListener2, yearFin, monthFin, dayFin);
-                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                datePickerDialog.show();
+            public void onClick(View view) {
+                dateRadioGroup.clearCheck();
+                new DatePickerDialog(VoirBeneficieActivity.this,dateFinL,myCalendar.get(Calendar.YEAR)
+                        ,myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        setListener2=new DatePickerDialog.OnDateSetListener()
 
-        {
+        calculerBeneficeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateSet (DatePicker view,int yearFin, int monthFin, int dayOfMonthFin)
-            {
-                monthFin = monthFin + 1;
-                String dateFin = yearFin + "-" + monthFin + "-" + dayFin;
-                finSemaineEdt.setText(dateFin);
-            }
-        }
+            public void onClick(View view) {
+                if ((dateDebutEt.getText().toString().contains("yyyy") || dateFinEt.getText().toString().contains("yyyy")) &&
+                        dateRadioGroup.getCheckedRadioButtonId() == -1){
+                    Toast.makeText(VoirBeneficieActivity.this,"veuillez choisir une date", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String dateDebut = dateDebutEt.getText().toString();
+                    String dateFin = dateFinEt.getText().toString();
 
-        ;
+                    int selectedId = dateRadioGroup.getCheckedRadioButtonId();
+                    RadioButton radioButton  = (RadioButton) dateRadioGroup.findViewById(selectedId);
+                    if (selectedId == -1) {
+                        factureVenteArrayList = databaseHelper.getFactureVenteForBenefice(dateDebut, dateFin, "no item selected");
+
+                    }else {
+                        factureVenteArrayList = databaseHelper.getFactureVenteForBenefice(dateDebut, dateFin, String.valueOf(radioButton.getText()));
+                    }
+                    float benefice = 0;
+
+                    for (int i=0;i<factureVenteArrayList.size();i++){
+                        benefice = benefice + factureVenteArrayList.get(i).getBeneficeFacture();
+                    }
+
+                    beneficieTV.setText(String.valueOf(benefice)+" DZD");
+
+                }
+            }
+        });
+
+
 
     }
-    public float getData(){
-        float benefice = 0;
-        factureVenteArrayList=new ArrayList<FactureVente>();
-        for(int i=0;i<factureVenteArrayList.size();i++){
-            factureVenteArrayList=db.getFactureVenteFromTo(debutSemaine,finSemaine);
-            benefice=factureVenteArrayList.get(i).getBeneficeFacture();
 
-        }
-        return benefice;
+
+    private void updateDateDebut(){
+        String myFormat="YYYY-MM-dd";
+        SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.FRENCH);
+        dateDebutEt.setText(dateFormat.format(myCalendar.getTime()));
+    }
+    private void updateDateFin(){
+        String myFormat="YYYY-MM-dd";
+        SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.FRENCH);
+        dateFinEt.setText(dateFormat.format(myCalendar.getTime()));
     }
 
     @Override
