@@ -6,24 +6,33 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.pfeact.myClasses.FactureVente;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 
 public class RapportsDeMoisActivity extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private Spinner spinner;
-    private BarChart barChart;
+    private PieChart pieChart;
     private ArrayList<BarEntry> barArraylist;
     private ArrayList<FactureVente> factureVenteArrayList;
     private float beneficeJan = 0;
@@ -42,12 +51,15 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
     private String année = "2022";
     private int i;
 
+    private float[] yData={25.3f, 10.6f, 66.76f, 44.32f, 46.01f, 16.89f, 23.9f, 55.2f, 90.45f, 77f, 11.36f, 45.85f};
+    private String[] xData={"janvier","fevrier","mars","avril","mai","juin","juillet","out","septembre","octobre","novembre"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapports_de_mois);
 
-        barChart = findViewById(R.id.idBarChartMois);
+        pieChart = findViewById(R.id.idPieChartMois);
 
         ActionBar actionBar = getSupportActionBar();
 
@@ -56,7 +68,7 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Rapports de mois");
         }
-        factureVenteArrayList = db.getFactureVenteFromTo("01-01-" + année + "", "31-01-" + année + "");
+      /*  factureVenteArrayList = db.getFactureVenteFromTo("01-01-" + année + "", "31-01-" + année + "");
         for (i = 0; i < factureVenteArrayList.size(); i++) {
             factureVenteArrayList.get(i);
             beneficeJan = beneficeJan + factureVenteArrayList.get(i).getBeneficeFacture();
@@ -153,7 +165,73 @@ public class RapportsDeMoisActivity extends AppCompatActivity {
             barChart.setDragEnabled(true);
             barChart.setScaleEnabled(true);
 
+        }*/
+        pieChart.setRotationEnabled(true);
+        pieChart.setHoleRadius(25f);
+        pieChart.setTransparentCircleAlpha(0);
+        pieChart.setCenterText("beneficies de mois");
+        //pieChart.setDrawEntryLabels(true);
+        addDataSet();
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int pos1=e.toString().indexOf("(sum):");
+                String beneficies=e.toString().substring(pos1 +7);
+
+                for(int i=0;i< yData.length;i++){
+                    if(yData[i]==Float.parseFloat(beneficies)){
+                        pos1=i;
+                        break;
+                    }
+                }
+                String mois=xData[pos1 + 1];
+                //Toast.makeText(this,"Mois" + mois + "Beneficies:" + beneficies + "DA" , Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+    }
+
+    private void addDataSet() {
+        ArrayList<PieEntry> yEntys=new ArrayList<>();
+        ArrayList<String> xEntrys=new ArrayList<>();
+
+        for(int i=0;i < yData.length;i++){
+            yEntys.add(new PieEntry(yData[i],i));
         }
+        for(int i=1;i < xData.length;i++){
+            xEntrys.add(xData[i]);
+        }
+        //create data set
+        PieDataSet pieDataSet=new PieDataSet(yEntys,"rapports de mois");
+        pieDataSet.setSliceSpace(2);
+        pieDataSet.setValueTextSize(12);
+        //add colors to dataset
+        ArrayList<Integer> colors=new ArrayList<>();
+        colors.add(Color.GRAY);
+        colors.add(Color.BLUE);
+        colors.add(Color.RED);
+        colors.add(Color.GREEN);
+        colors.add(Color.CYAN);
+        colors.add(Color.YELLOW);
+        colors.add(Color.MAGENTA);
+        colors.add(Color.LTGRAY);
+        colors.add(Color.DKGRAY);
+        colors.add(Color.TRANSPARENT);
+        colors.add(Color.CYAN);
+        colors.add(Color.RED);
+
+        pieDataSet.setColors(colors);
+
+        //create pie data object
+        PieData pieData=new PieData(pieDataSet);
+        pieChart.setData(pieData);
+        pieChart.invalidate();
+
     }
 
     @Override

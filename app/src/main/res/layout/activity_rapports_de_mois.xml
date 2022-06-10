@@ -8,8 +8,8 @@
 
 
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/idBarChartMois"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/idPieChartMois"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

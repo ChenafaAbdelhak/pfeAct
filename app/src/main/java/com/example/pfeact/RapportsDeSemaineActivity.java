@@ -57,7 +57,7 @@ public class RapportsDeSemaineActivity extends AppCompatActivity {
 
     private void getData() {
         barArraylist=new ArrayList<>();
-        for (int i = 7; i >= 0; i--) {
+       /* for (int i = 7; i >= 0; i--) {
             currentDay=getPastDayDate(i);
             factureVenteArrayList=db.getFactureVenteInDay(currentDay);
             sommeBeneficie=0;
@@ -70,7 +70,12 @@ public class RapportsDeSemaineActivity extends AppCompatActivity {
                 }
             }
             barArraylist.add(new BarEntry(Float.parseFloat(currentDay),sommeBeneficie));
-        }
+        }*/
+        barArraylist.add(new BarEntry(2f,10));
+        barArraylist.add(new BarEntry(3f,35));
+        barArraylist.add(new BarEntry(4f,100));
+        barArraylist.add(new BarEntry(5f,5));
+        barArraylist.add(new BarEntry(6f,50));
     }
 
     private String getPastDayDate(int i){

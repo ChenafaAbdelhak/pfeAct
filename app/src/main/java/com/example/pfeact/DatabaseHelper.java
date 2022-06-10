@@ -1039,33 +1039,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public ArrayList<FactureVente> getFactureVenteInDay(String date){
-        SQLiteDatabase db=this.getReadableDatabase();
+    public ArrayList<FactureVente> getFactureVenteInDay(String date) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        ArrayList<FactureVente> factureVenteArrayList  = new ArrayList<>();
-        String query=" SELECT * FROM FatureVente WHERE dateVente = '"+date+"'";
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+        String query = " SELECT * FROM FatureVente WHERE dateVente = '" + date + "'";
 
-        Cursor cursor=db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
             do {
-                factureVenteArrayList.add(new FactureVente(cursor.getLong(0),cursor.getInt(1),cursor.getString(2),
-                        cursor.getString(3), cursor.getFloat(4),cursor.getFloat(5),cursor.getFloat(6)));
-            }while (cursor.moveToNext());
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
 
         return factureVenteArrayList;
 
-
-
-
-
-
-
-
-
-
+    }
 
 
     @Override
@@ -1079,7 +1071,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS LigneAchat");
         db.execSQL("DROP TABLE IF EXISTS LigneVente");
         onCreate(db);
-    }
 
+    }
 }
 
