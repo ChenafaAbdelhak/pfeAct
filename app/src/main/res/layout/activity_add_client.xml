@@ -11,43 +11,33 @@
         android:id="@+id/imageView6"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="135dp"
-        android:layout_marginBottom="35dp"
-        app:layout_constraintBottom_toTopOf="@+id/idNomClientAddTV"
+        android:layout_marginTop="44dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.275"
         app:srcCompat="@drawable/ic_dashbord_client" />
 
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="480dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView17"
-        app:layout_constraintHorizontal_bias="0.4"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6"
         app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
     <TextView
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="Nom:"
         android:textSize="20dp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="76dp"
-        tools:layout_editor_absoluteY="217dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -57,17 +47,19 @@
         android:ems="10"
         android:hint="Nom du Client"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="200dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+        app:layout_constraintStart_toStartOf="@+id/idAdresseClientAddTV"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+         />
 
     <ImageView
         android:id="@+id/imageView8"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/imageView5"
         app:srcCompat="@drawable/ic_adresse"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="276dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -77,9 +69,9 @@
         android:text="Adresse:"
         android:textSize="20dp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="76dp"
-        tools:layout_editor_absoluteY="302dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+        app:layout_constraintStart_toStartOf="@+id/textView17"
+        app:layout_constraintTop_toTopOf="@+id/imageView8" />
 
     <EditText
         android:id="@+id/idAdresseClientAddTV"
@@ -88,39 +80,42 @@
         android:ems="10"
         android:hint="Adresse du Client"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="284dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+        app:layout_constraintStart_toStartOf="@+id/idPhoneClientAddTV"
+        app:layout_constraintTop_toTopOf="@+id/imageView8"
         tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
         app:srcCompat="@drawable/ic_phone"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="352dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Telephone:"
+        android:text="Téléphone:"
         android:textSize="20dp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="378dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+        app:layout_constraintStart_toStartOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/imageView9" />
 
     <EditText
         android:id="@+id/idPhoneClientAddTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:ems="10"
-        android:hint="Numero Telephone du Client"
+        android:hint="Numéro Téléphone du client"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="167dp"
-        tools:layout_editor_absoluteY="360dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toTopOf="@+id/imageView9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
