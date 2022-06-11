@@ -344,7 +344,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/aclonica"
-                        android:text="Paramétres"
+                        android:text="Familles"
                         android:textSize="20dp" />
 
                     <ImageView
@@ -353,7 +353,7 @@
                         android:layout_height="75dp"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        app:srcCompat="@drawable/ic_dashboard_settings" />
+                        app:srcCompat="@drawable/ic_famille" />
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>

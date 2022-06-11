@@ -72,7 +72,7 @@ public class MainActivity extends DrawerBaseActivity {
         cardParametres.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),ParametresActivity.class));
+                startActivity(new Intent(getApplicationContext(),FamilleActivity.class));
             }
         });
     }
