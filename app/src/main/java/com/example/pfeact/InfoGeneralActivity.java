@@ -14,7 +14,8 @@ import com.example.pfeact.myClasses.Produit;
 public class InfoGeneralActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
-    private TextView nombreProduitsTV,montantTotAchatTv,montantTotVenteTv,produitPlusVenduTv;
+    private TextView nombreProduitsTV,montantTotAchatTv,montantTotVenteTv,produitPlusVenduTv
+            ,chiffreaffaireAnnelleTv,getChiffreaffaireMoisTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +37,20 @@ public class InfoGeneralActivity extends AppCompatActivity {
         montantTotAchatTv = findViewById(R.id.idTvMontantTotProduitsPAchat);
         montantTotVenteTv = findViewById(R.id.idTvMontantTotProduitsPVente);
         produitPlusVenduTv=findViewById(R.id.idTvProduitPlusVendu);
+        chiffreaffaireAnnelleTv = findViewById(R.id.idTvChiffreAffairesAnnuelle);
+        getChiffreaffaireMoisTv = findViewById(R.id.idTvChiffreAffairesMois);
 
         nombreProduitsTV.setText(String.valueOf(databaseHelper.countProduits()));
         montantTotAchatTv.setText(String.valueOf(databaseHelper.getCapitalTotalAchat()));
         montantTotVenteTv.setText(String.valueOf(databaseHelper.getCapitalTotalVente()));
         Produit produit = databaseHelper.getProduitPlusVendu();
-        produitPlusVenduTv.setText(produit.getDesignation()+"    "+produit.getQte()+" fois");
+        if (produit != null) {
+            produitPlusVenduTv.setText(produit.getDesignation() + "    " + produit.getQte() + " fois");
+        }else{
+            produitPlusVenduTv.setText("");
+        }
+        chiffreaffaireAnnelleTv.setText(String.valueOf(""+databaseHelper.getChiffreAffaireAnnuelle())+"  DZD");
+        getChiffreaffaireMoisTv.setText(String.valueOf(""+databaseHelper.getChiffreAffaireMois())+"   DZD");
 
     }
 

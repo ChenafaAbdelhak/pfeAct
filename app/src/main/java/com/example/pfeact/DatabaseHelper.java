@@ -86,25 +86,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LIGNEACHAT_TABLE);
         db.execSQL(CREATE_LIGNEVENTE_TABLE);
 
-        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente) values('wwwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','1234',5,100000,1000000);");
-        db.execSQL("insert into Produit( designation,cbProduit,qte,prixAchat,prixVente,idFamille) values('aaa','1235',5,10,100,1);");
-        db.execSQL("insert into Famille( nomFamille) values('autre');");
-        db.execSQL("insert into Fournisseur( nomFournisseur) values('default');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-05-05','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-01','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-06','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-07','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-08','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-09','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-10','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-11','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-12','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-13','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-20','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-29','13:50:50');");
-        db.execSQL("insert into FactureVente( dateVente,heureVente) values('2022-06-30','13:50:50');");
 
-        db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('ANONYME','_',0,0,'_');");
+        db.execSQL("insert into Famille( nomFamille) values('DEFAULTFamille');");
+        db.execSQL("insert into Fournisseur( nomFournisseur) values('DEFAULTFournisseur');");
+        db.execSQL("insert into Client( nomClient,adresseClient,detteMaxClient,detteClient,phoneClient) values('ClientANONYME','_',0,0,'_');");
 
     }
 
@@ -636,19 +621,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         long idFactureAchat = db.insert("FactureAchat",null,cv);
 
-            cv.clear();
+        cv.clear();
 
-            //ajouter une ligne achat
+        //ajouter une ligne achat
 
-            cv.put("idProduit",produit.getId());
-            cv.put("idFactureAchat",idFactureAchat);
-            cv.put("qteAchat",produit.getQte());
-            cv.put("prixAchat",produit.getPrixAchat());
-            cv.put("prixVente",produit.getPrixVente());
+        cv.put("idProduit",produit.getId());
+        cv.put("idFactureAchat",idFactureAchat);
+        cv.put("qteAchat",produit.getQte());
+        cv.put("prixAchat",produit.getPrixAchat());
+        cv.put("prixVente",produit.getPrixVente());
 
-            db.insert("LigneAchat",null,cv);
+        db.insert("LigneAchat",null,cv);
 
-            cv.clear();
+        cv.clear();
 
 
 
@@ -1160,7 +1145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("select idProduit, sum(qteVendu) from LigneVente group by idProduit order by sum(qteVendu) desc LIMIT 1;",null);
 
-        cursor.moveToFirst();
+        if(cursor.moveToFirst()){
         int idProduit = cursor.getInt(0);
         int ocuurence = cursor.getInt(1);
 
@@ -1173,7 +1158,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         cursor2.close();
 
-        return produit;
+        return produit;}else
+        {
+            return null;
+        }
     }
 
     public float getCapitalTotalAchat(){
@@ -1223,6 +1211,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             sommeTotal = sommeTotal +(produit.getQte()*produit.getPrixVente());
         }
         return sommeTotal;
+    }
+
+    public float getChiffreAffaireAnnuelle() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+
+
+        Cursor cursor = db.rawQuery("select * from FactureVente where strftime('%Y', dateVente) == strftime('%Y', 'now') order by dateVente desc, heureVente desc", null);
+        if (cursor.moveToFirst()) {
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        float montant = 0;
+
+        for (int i=0; i<factureVenteArrayList.size(); i++){
+            montant = montant + factureVenteArrayList.get(i).getMontantTotal();
+        }
+
+        return montant;
+
+    }
+
+    public float getChiffreAffaireMois() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<FactureVente> factureVenteArrayList = new ArrayList<>();
+
+
+        Cursor cursor = db.rawQuery("select * from FactureVente where strftime('%m', dateVente) == strftime('%m', 'now') order by dateVente desc, heureVente desc", null);
+        if (cursor.moveToFirst()) {
+            do {
+                factureVenteArrayList.add(new FactureVente(cursor.getLong(0), cursor.getInt(1), cursor.getString(2),
+                        cursor.getString(3), cursor.getFloat(4), cursor.getFloat(5), cursor.getFloat(6)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        float montant = 0;
+
+        for (int i=0; i<factureVenteArrayList.size(); i++){
+            montant = montant + factureVenteArrayList.get(i).getMontantTotal();
+        }
+
+        return montant;
+
     }
 
 
